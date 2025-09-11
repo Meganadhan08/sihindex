@@ -1,16 +1,15 @@
 import React from 'react';
-import { Leaf, Users, FlaskConical, ShoppingBag, Scan, Globe, Shield, TrendingUp, ArrowRight, MapPin, Award, Clock } from 'lucide-react';
+import { Leaf, Scan, Globe, Shield, TrendingUp, ArrowRight, MapPin, Award, Clock, LogOut } from 'lucide-react';
+import { User } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 
 interface HomepageProps {
   onViewChange: (view: string) => void;
-  onRoleSelect: (role: string) => void;
+  user: User;
 }
 
-const Homepage: React.FC<HomepageProps> = ({ onViewChange, onRoleSelect }) => {
-  const handleRoleClick = (role: string) => {
-    onRoleSelect(role);
-    onViewChange('dashboard');
-  };
+const Homepage: React.FC<HomepageProps> = ({ onViewChange, user }) => {
+  const { logout } = useAuth();
 
   const features = [
     {
@@ -45,7 +44,7 @@ const Homepage: React.FC<HomepageProps> = ({ onViewChange, onRoleSelect }) => {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b border-green-100">
+      <nav className="bg-white shadow-sm border-b border-green-100 bg-gradient-to-br from-green-50 to-emerald-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center space-x-2">
@@ -67,12 +66,22 @@ const Homepage: React.FC<HomepageProps> = ({ onViewChange, onRoleSelect }) => {
                 <span>Scan QR</span>
               </button>
             </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-700">Welcome, <strong>{user.name}</strong></span>
+              <button
+                onClick={logout}
+                className="text-gray-700 hover:text-green-600 transition-colors flex items-center space-x-1"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-green-600 to-emerald-600 text-white py-20">
+      <section className="bg-gradient-to-r from-green-600 to-emerald-600 text-white py-20 bg-gradient-to-br from-green-50 to-emerald-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
@@ -105,7 +114,7 @@ const Homepage: React.FC<HomepageProps> = ({ onViewChange, onRoleSelect }) => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-white py-16">
+      <section className="bg-white py-16 bg-gradient-to-br from-green-50 to-emerald-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -121,7 +130,7 @@ const Homepage: React.FC<HomepageProps> = ({ onViewChange, onRoleSelect }) => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-green-50">
+      <section className="py-20 bg-green-50 bg-gradient-to-br from-green-50 to-emerald-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -147,59 +156,36 @@ const Homepage: React.FC<HomepageProps> = ({ onViewChange, onRoleSelect }) => {
         </div>
       </section>
 
-      {/* Role Selection Section */}
-      <section className="py-20 bg-white">
+      {/* Dashboard Access Section */}
+      <section className="py-20 bg-white bg-gradient-to-br from-green-50 to-emerald-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Choose Your Role
-            </h2>
-            <p className="text-xl text-gray-600">
-              Access specialized dashboards designed for your specific needs
-            </p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Your Dashboard</h2>
+            <p className="text-xl text-gray-600">Access your specialized dashboard</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <button 
-              onClick={() => handleRoleClick('farmer')}
+          <div className="flex justify-center">
+            <button
+              onClick={() => onViewChange('dashboard')}
               className="group bg-gradient-to-br from-green-500 to-green-600 p-8 rounded-xl text-white hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105"
             >
-              <Users className="w-12 h-12 mb-4 mx-auto group-hover:scale-110 transition-transform" />
-              <h3 className="text-xl font-semibold mb-2">Farmer/Collector</h3>
-              <p className="text-green-100">Record collection data and geo-location</p>
-            </button>
-
-            <button 
-              onClick={() => handleRoleClick('lab')}
-              className="group bg-gradient-to-br from-blue-500 to-blue-600 p-8 rounded-xl text-white hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-105"
-            >
-              <FlaskConical className="w-12 h-12 mb-4 mx-auto group-hover:scale-110 transition-transform" />
-              <h3 className="text-xl font-semibold mb-2">Laboratory</h3>
-              <p className="text-blue-100">Conduct quality testing and certification</p>
-            </button>
-
-            <button 
-              onClick={() => handleRoleClick('seller')}
-              className="group bg-gradient-to-br from-purple-500 to-purple-600 p-8 rounded-xl text-white hover:from-purple-600 hover:to-purple-700 transition-all transform hover:scale-105"
-            >
-              <ShoppingBag className="w-12 h-12 mb-4 mx-auto group-hover:scale-110 transition-transform" />
-              <h3 className="text-xl font-semibold mb-2">Seller/Distributor</h3>
-              <p className="text-purple-100">Manage inventory and supply chain</p>
-            </button>
-
-            <button 
-              onClick={() => handleRoleClick('consumer')}
-              className="group bg-gradient-to-br from-orange-500 to-orange-600 p-8 rounded-xl text-white hover:from-orange-600 hover:to-orange-700 transition-all transform hover:scale-105"
-            >
-              <Shield className="w-12 h-12 mb-4 mx-auto group-hover:scale-110 transition-transform" />
-              <h3 className="text-xl font-semibold mb-2">Consumer</h3>
-              <p className="text-orange-100">Verify authenticity and quality</p>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <span className="text-2xl font-bold">{user.role.charAt(0).toUpperCase()}</span>
+                </div>
+                <h3 className="text-2xl font-semibold mb-2 capitalize">{user.role} Dashboard</h3>
+                <p className="text-green-100 mb-4">{user.organization}</p>
+                <div className="flex items-center justify-center space-x-2 text-green-200">
+                  <span>Access Dashboard</span>
+                  <ArrowRight className="w-5 h-5" />
+                </div>
+              </div>
             </button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-12 bg-gradient-to-br from-green-50 to-emerald-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
