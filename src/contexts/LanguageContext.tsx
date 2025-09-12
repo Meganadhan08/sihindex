@@ -348,8 +348,94 @@ const translations = {
     'footer.terms': 'సేవా నిబంధనలు',
     'footer.contact': 'మమ్మల్ని సంప్రదించండి',
     'footer.copyright': '© 2025 HerbTrace. ఆయుర్వేద పారదర్శకత కోసం నిర్మించబడింది.',
-  }
+  },
+  kn: {
+    // Navigation
+    'nav.home': 'ಮುಖಪುಟ',
+    'nav.features': 'ವೈಶಿಷ್ಟ್ಯಗಳು',
+    'nav.about': 'ನಮ್ಮ ಬಗ್ಗೆ',
+    'nav.contact': 'ಸಂಪರ್ಕಿಸಿ',
+    'nav.login': 'ಲಾಗಿನ್',
+    'nav.signup': 'ಸೈನ್ ಅಪ್',
+    'nav.dashboard': 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
+    'nav.logout': 'ಲಾಗ್ ಔಟ್',
+    
+    // Landing Page
+    'hero.title': 'ಬ್ಲಾಕ್‌ಚೈನ್ ಆಧಾರಿತ ಆಯುರ್ವೇದ ಸಸ್ಯಗಳ ಹಾದಿ-ಹುಡುಕಾಟ',
+    'hero.subtitle': 'ಜಮೀನಿನಿಂದ ಫಾರ್ಮುಲೇಶನ್‌ವರೆಗೆ ಸಂಪೂರ್ಣ ಪಾರದರ್ಶಕತೆ. ಜಿಯೋ-ಟ್ಯಾಗ್ ಮಾಡಿದ ನಿಖರತೆ ಮತ್ತು ಬ್ಲಾಕ್‌ಚೈನ್ ಭದ್ರತೆಯೊಂದಿಗೆ ಪ್ರತಿಯೊಂದು ಆಯುರ್ವೇದ ಸಸ್ಯದ ಪ್ರಯಾಣವನ್ನು ಟ್ರಾಕ್ ಮಾಡಿ.',
+    'hero.cta.primary': 'ಪ್ರಾರಂಭಿಸಿ',
+    'hero.cta.secondary': 'ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ',
+    
+    // Features
+    'features.title': 'ಕ್ರಾಂತಿಕಾರಿ ಹಾದಿ-ಹುಡುಕಾಟ ವೈಶಿಷ್ಟ್ಯಗಳು',
+    'features.subtitle': 'ನಮ್ಮ ಬ್ಲಾಕ್‌ಚೈನ್ ಆಧಾರಿತ ವ್ಯವಸ್ಥೆ ಆಯುರ್ವೇದ ಸಸ್ಯಗಳಿಗೆ ಅಪೂರ್ವ ಪಾರದರ್ಶಕತೆ ಮತ್ತು ನೈಜತೆಯ ಪರಿಶೀಲನೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ.',
+    'features.geotagged.title': 'ಜಿಯೋ-ಟ್ಯಾಗ್ ಮಾಡಿದ ಸಂಗ್ರಹ',
+    'features.geotagged.desc': 'ಸಂಗ್ರಹ ಬಿಂದುಗಳ ನಿಖರ GPS ನಿರ್ದೇಶಾಂಕಗಳಿಂದ ಸಸ್ಯಗಳನ್ನು ಟ್ರಾಕ್ ಮಾಡಿ',
+    'features.blockchain.title': 'ಬ್ಲಾಕ್‌ಚೈನ್ ಭದ್ರತೆ',
+    'features.blockchain.desc': 'ಅಮಿಟವಾದ ದಾಖಲೆಗಳು ನೈಜತೆಯನ್ನು ಖಚಿತಪಡಿಸುತ್ತವೆ ಮತ್ತು ತಿರುಚುವಿಕೆಯನ್ನು ತಡೆಯುತ್ತವೆ',
+    'features.quality.title': 'ಗುಣಮಟ್ಟದ ಭರವಸೆ',
+    'features.quality.desc': 'ಪ್ರಯೋಗಾಲಯ ಪರಿಶೀಲಿತ ಗುಣಮಟ್ಟದ ಮಾನದಂಡಗಳು ಮತ್ತು ಅನುಕೂಲ ಪ್ರಮಾಣಪತ್ರಗಳು',
+    'features.realtime.title': 'ರಿಯಲ್-ಟೈಮ್ ಟ್ರ್ಯಾಕಿಂಗ್',
+    'features.realtime.desc': 'ಸರಬರಾಜು ಸರಪಳಿಯ ಪ್ರತಿಯೊಂದು ಹಂತದಲ್ಲೂ ನಿಮ್ಮ ಸಸ್ಯಗಳನ್ನು ನಿಗಾಲಿಸಿ',
+    
+    // Authentication
+    'auth.signin': 'ಸೈನ್ ಇನ್',
+    'auth.signup': 'ಸೈನ್ ಅಪ್',
+    'auth.email': 'ಇಮೇಲ್ ವಿಳಾಸ',
+    'auth.password': 'ಪಾಸ್ವರ್ಡ್',
+    'auth.confirmPassword': 'ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ',
+    'auth.fullName': 'ಪೂರ್ಣ ಹೆಸರು',
+    'auth.organization': 'ಸಂಸ್ಥೆ',
+    'auth.phone': 'ಫೋನ್ ಸಂಖ್ಯೆ',
+    'auth.selectRole': 'ನಿಮ್ಮ ಪಾತ್ರವನ್ನು ಆರಿಸಿ',
+    'auth.createAccount': 'ಖಾತೆ ರಚಿಸಿ',
+    'auth.haveAccount': 'ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ?',
+    'auth.noAccount': 'ಖಾತೆ ಇಲ್ಲವೇ?',
+    'auth.forgotPassword': 'ಪಾಸ್ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?',
+    
+    // Roles
+    'role.farmer': 'ಕೃಷಿಕ/ಸಂಗ್ರಹಕ',
+    'role.farmer.desc': 'GPS ನಿರ್ದೇಶಾಂಕಗಳು ಮತ್ತು ಪರಿಸರದ ಡೇಟಾದೊಂದಿಗೆ ಸಸ್ಯ ಸಂಗ್ರಹವನ್ನು ದಾಖಲಿಸಿ',
+    'role.lab': 'ಪ್ರಯೋಗಾಲಯ',
+    'role.lab.desc': 'ಗುಣಮಟ್ಟ ಪರೀಕ್ಷೆ ನಡೆಸಿ ಮತ್ತು ಅನುಮೋದನಾ ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ನೀಡಿ',
+    'role.processor': 'ಪ್ರೊಸೆಸರ್/ತಯಾರಕ',
+    'role.processor.desc': 'ಬ್ಯಾಚ್ ಟ್ರ್ಯಾಕಿಂಗ್‌ನೊಂದಿಗೆ ಸಸ್ಯಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಿ ಮತ್ತು ಅಂತಿಮ ಉತ್ಪನ್ನಗಳನ್ನು ತಯಾರಿಸಿ',
+    'role.admin': 'ನಿರ್ವಹಣಾಧಿಕಾರಿ/ಮೇಲ್ವಿಚಾರಕ',
+    'role.admin.desc': 'ವ್ಯವಸ್ಥಾ ಮಟ್ಟದ ಕಾರ್ಯಾಚರಣೆಗಳನ್ನು ನಿಗಾಲಿಸಿ ಮತ್ತು ಅನುಕೂಲ ನಿರ್ವಹಿಸಿ',
+    
+    // Dashboard
+    'dashboard.welcome': 'ಸ್ವಾಗತ',
+    'dashboard.overview': 'ಅವಲೋಕನ',
+    'dashboard.newRecord': 'ಹೊಸ ದಾಖಲಾತಿ',
+    'dashboard.recentActivity': 'ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ',
+    'dashboard.statistics': 'ಅಂಕಿ-ಅಂಶಗಳು',
+    
+    // Common
+    'common.save': 'ಉಳಿಸಿ',
+    'common.cancel': 'ರದ್ದುಗೊಳಿಸಿ',
+    'common.submit': 'ಸಲ್ಲಿಸಿ',
+    'common.loading': 'ಲೋಡ್ ಆಗುತ್ತಿದೆ...',
+    'common.error': 'ದೋಷ',
+    'common.success': 'ಯಶಸ್ಸು',
+    'common.search': 'ಹುಡುಕಿ',
+    'common.filter': 'ಫಿಲ್ಟರ್',
+    'common.export': 'ರಫ್ತು',
+    'common.import': 'ಆಮದು',
+    'common.delete': 'ಅಳಿಸಿ',
+    'common.edit': 'ತಿದ್ದು',
+    'common.view': 'ನೋಡಿ',
+    'common.download': 'ಡೌನ್‌ಲೋಡ್',
+    'common.upload': 'ಅಪ್‌ಲೋಡ್',
+    
+    // Footer
+    'footer.about': 'HerbTrace ಬಗ್ಗೆ',
+    'footer.privacy': 'ಗೌಪ್ಯತಾ ನೀತಿ',
+    'footer.terms': 'ಸೇವಾ ಷರತ್ತುಗಳು',
+    'footer.contact': 'ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ',
+    'footer.copyright': '© 2025 HerbTrace. ಆಯುರ್ವೇದ ಪಾರದರ್ಶಕತೆಗಾಗಿ ನಿರ್ಮಿಸಲಾಗಿದೆ.',
+  },
 };
+
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState(() => {
