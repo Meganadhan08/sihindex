@@ -10,6 +10,7 @@ const LanguageSelector: React.FC = () => {
     { code: 'hi', name: 'हिंदी', flag: '🇮🇳' },
     { code: 'ta', name: 'தமிழ்', flag: '🇮🇳' },
     { code: 'te', name: 'తెలుగు', flag: '🇮🇳' },
+    { code: 'kn', name: 'Kannada', flag: 'IN' },
   ];
 
   return (
