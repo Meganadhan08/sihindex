@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { LogOut } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import LoginPage from './components/LoginPage';
+import { LanguageProvider } from './contexts/LanguageContext';
+import LandingPage from './components/LandingPage';
+import AuthPages from './components/AuthPages';
 import Homepage from './components/Homepage';
 import FarmerDashboard from './components/FarmerDashboard';
 import LabDashboard from './components/LabDashboard';
@@ -12,10 +14,13 @@ import QRScanner from './components/QRScanner';
 
 const AppContent: React.FC = () => {
   const { user, logout } = useAuth();
-  const [currentView, setCurrentView] = useState('home');
+  const [currentView, setCurrentView] = useState('landing');
 
   if (!user) {
-    return <LoginPage />;
+    if (currentView === 'login' || currentView === 'signup') {
+      return <AuthPages mode={currentView} onNavigate={setCurrentView} />;
+    }
+    return <LandingPage onNavigate={setCurrentView} />;
   }
 
   const getDashboardComponent = () => {
@@ -77,6 +82,8 @@ const AppContent: React.FC = () => {
         return <TraceabilityView onViewChange={setCurrentView} />;
       case 'scan':
         return <QRScanner onViewChange={setCurrentView} />;
+      case 'landing':
+        return <LandingPage onNavigate={setCurrentView} />;
       default:
         return <Homepage onViewChange={setCurrentView} user={user} />;
     }
@@ -91,9 +98,11 @@ const AppContent: React.FC = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </LanguageProvider>
   );
 }
 

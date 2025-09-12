@@ -1,12 +1,23 @@
 export interface User {
   id: string;
   email: string;
+  password: string;
   role: 'farmer' | 'lab' | 'processor' | 'admin';
   name: string;
   organization?: string;
+  phone?: string;
   licenseNumber?: string;
   location?: string;
   createdAt: string;
+}
+
+export interface SignupData {
+  email: string;
+  password: string;
+  fullName: string;
+  organization: string;
+  phone?: string;
+  role: 'farmer' | 'lab' | 'processor' | 'admin';
 }
 
 export interface HerbCollection {
