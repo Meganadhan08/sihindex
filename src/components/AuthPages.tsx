@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Leaf, Eye, EyeOff, AlertCircle, Loader, Users, FlaskConical, Factory, Shield, ArrowLeft } from 'lucide-react';
+import { Leaf, Eye, EyeOff, AlertCircle, Loader, Users, FlaskConical, Factory, ArrowLeft, MapPin, Phone, Mail, User, Building } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import LanguageSelector from './LanguageSelector';
@@ -17,9 +17,10 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    fullName: '',
+    name: '',
+    location: '',
+    contact_number: '',
     organization: '',
-    phone: '',
     role: ''
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -31,29 +32,28 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
       id: 'farmer',
       title: t('role.farmer'),
       description: t('role.farmer.desc'),
-      icon: <Users className="w-6 h-6" />,
-      color: 'border-green-200 hover:border-green-400 hover:bg-green-50'
+      icon: <Users className="w-8 h-8" />,
+      color: 'border-green-200 hover:border-green-400 hover:bg-green-50',
+      bgColor: 'bg-green-50',
+      textColor: 'text-green-700'
     },
     {
       id: 'lab',
       title: t('role.lab'),
       description: t('role.lab.desc'),
-      icon: <FlaskConical className="w-6 h-6" />,
-      color: 'border-blue-200 hover:border-blue-400 hover:bg-blue-50'
+      icon: <FlaskConical className="w-8 h-8" />,
+      color: 'border-blue-200 hover:border-blue-400 hover:bg-blue-50',
+      bgColor: 'bg-blue-50',
+      textColor: 'text-blue-700'
     },
     {
       id: 'processor',
       title: t('role.processor'),
       description: t('role.processor.desc'),
-      icon: <Factory className="w-6 h-6" />,
-      color: 'border-purple-200 hover:border-purple-400 hover:bg-purple-50'
-    },
-    {
-      id: 'admin',
-      title: t('role.admin'),
-      description: t('role.admin.desc'),
-      icon: <Shield className="w-6 h-6" />,
-      color: 'border-orange-200 hover:border-orange-400 hover:bg-orange-50'
+      icon: <Factory className="w-8 h-8" />,
+      color: 'border-purple-200 hover:border-purple-400 hover:bg-purple-50',
+      bgColor: 'bg-purple-50',
+      textColor: 'text-purple-700'
     }
   ];
 
@@ -85,7 +85,7 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
     } else {
       // Signup validation
       if (!formData.email || !formData.password || !formData.confirmPassword || 
-          !formData.fullName || !formData.organization || !formData.role) {
+          !formData.name || !formData.location || !formData.contact_number || !formData.role) {
         setError('Please fill in all required fields');
         return;
       }
@@ -103,10 +103,11 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
       const success = await signup({
         email: formData.email,
         password: formData.password,
-        fullName: formData.fullName,
+        name: formData.name,
+        location: formData.location,
+        contact_number: formData.contact_number,
         organization: formData.organization,
-        phone: formData.phone,
-        role: formData.role as 'farmer' | 'lab' | 'processor' | 'admin'
+        role: formData.role as 'farmer' | 'lab' | 'processor'
       });
 
       if (!success) {
@@ -117,203 +118,249 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
+      <div className="max-w-2xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-6">
             <button
               onClick={() => onNavigate('landing')}
-              className="text-gray-500 hover:text-gray-700 transition-colors"
+              className="text-gray-500 hover:text-gray-700 transition-colors p-2 rounded-lg hover:bg-white/50"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
-            <div className="flex items-center space-x-2">
-              <Leaf className="w-8 h-8 text-green-600" />
-              <h1 className="text-2xl font-bold text-gray-900">HerbTrace</h1>
+            <div className="flex items-center space-x-3">
+              <Leaf className="w-10 h-10 text-green-600" />
+              <h1 className="text-3xl font-bold text-gray-900">HerbTrace</h1>
             </div>
             <LanguageSelector />
           </div>
-          <p className="text-gray-600">
-            {mode === 'login' ? 'Welcome back!' : 'Join the revolution in Ayurvedic traceability'}
+          <p className="text-gray-600 text-lg">
+            {mode === 'login' ? 'Welcome back to the future of herb traceability!' : 'Join the revolution in Ayurvedic transparency'}
           </p>
         </div>
 
         {/* Auth Form */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
+        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             {mode === 'login' ? t('auth.signin') : t('auth.signup')}
           </h2>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             {mode === 'signup' && (
               <>
-                <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('auth.fullName')} *
-                  </label>
-                  <input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                    placeholder="Enter your full name"
-                    disabled={isLoading}
-                    required
-                  />
+                {/* Personal Information Section */}
+                <div className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <User className="w-5 h-5 mr-2 text-green-600" />
+                    Personal Information
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                        {t('auth.name')} *
+                      </label>
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        placeholder="Enter your full name"
+                        disabled={isLoading}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="contact_number" className="block text-sm font-medium text-gray-700 mb-2">
+                        {t('auth.contact')} *
+                      </label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input
+                          id="contact_number"
+                          name="contact_number"
+                          type="tel"
+                          value={formData.contact_number}
+                          onChange={handleInputChange}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                          placeholder="+91 9876543210"
+                          disabled={isLoading}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                      {t('auth.location')} *
+                    </label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        id="location"
+                        name="location"
+                        type="text"
+                        value={formData.location}
+                        onChange={handleInputChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        placeholder="City, State, Country"
+                        disabled={isLoading}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <label htmlFor="organization" className="block text-sm font-medium text-gray-700 mb-2">
+                      {t('auth.organization')}
+                    </label>
+                    <div className="relative">
+                      <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        id="organization"
+                        name="organization"
+                        type="text"
+                        value={formData.organization}
+                        onChange={handleInputChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                        placeholder="Organization name (optional)"
+                        disabled={isLoading}
+                      />
+                    </div>
+                  </div>
                 </div>
 
+                {/* Role Selection */}
                 <div>
-                  <label htmlFor="organization" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('auth.organization')} *
+                  <label className="block text-sm font-medium text-gray-700 mb-4">
+                    {t('auth.selectRole')} *
                   </label>
-                  <input
-                    id="organization"
-                    name="organization"
-                    type="text"
-                    value={formData.organization}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                    placeholder="Enter your organization name"
-                    disabled={isLoading}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('auth.phone')}
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                    placeholder="Enter your phone number"
-                    disabled={isLoading}
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {roles.map((role) => (
+                      <button
+                        key={role.id}
+                        type="button"
+                        onClick={() => handleRoleSelect(role.id)}
+                        className={`p-6 border-2 rounded-xl text-left transition-all transform hover:scale-105 ${
+                          formData.role === role.id
+                            ? `border-green-500 ${role.bgColor} shadow-lg`
+                            : role.color
+                        }`}
+                        disabled={isLoading}
+                      >
+                        <div className="flex flex-col items-center text-center space-y-3">
+                          <div className={formData.role === role.id ? role.textColor : 'text-gray-600'}>
+                            {role.icon}
+                          </div>
+                          <div>
+                            <h3 className={`font-semibold ${formData.role === role.id ? role.textColor : 'text-gray-900'}`}>
+                              {role.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+                              {role.description}
+                            </p>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </>
             )}
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                {t('auth.email')} *
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                placeholder="Enter your email"
-                disabled={isLoading}
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                {t('auth.password')} *
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors pr-12"
-                  placeholder="Enter your password"
-                  disabled={isLoading}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  disabled={isLoading}
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {mode === 'signup' && (
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('auth.confirmPassword')} *
-                </label>
-                <div className="relative">
+            {/* Account Credentials Section */}
+            <div className="bg-gray-50 p-6 rounded-xl">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Mail className="w-5 h-5 mr-2 text-green-600" />
+                Account Credentials
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t('auth.email')} *
+                  </label>
                   <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    value={formData.confirmPassword}
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors pr-12"
-                    placeholder="Confirm your password"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                    placeholder="Enter your email address"
                     disabled={isLoading}
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                    disabled={isLoading}
-                  >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
                 </div>
-              </div>
-            )}
 
-            {mode === 'signup' && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  {t('auth.selectRole')} *
-                </label>
-                <div className="grid grid-cols-1 gap-3">
-                  {roles.map((role) => (
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                    {t('auth.password')} *
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors pr-12"
+                      placeholder="Enter your password"
+                      disabled={isLoading}
+                      required
+                    />
                     <button
-                      key={role.id}
                       type="button"
-                      onClick={() => handleRoleSelect(role.id)}
-                      className={`p-4 border-2 rounded-lg text-left transition-all ${
-                        formData.role === role.id
-                          ? 'border-green-500 bg-green-50'
-                          : role.color
-                      }`}
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                       disabled={isLoading}
                     >
-                      <div className="flex items-start space-x-3">
-                        <div className="text-gray-600">{role.icon}</div>
-                        <div>
-                          <h3 className="font-medium text-gray-900">{role.title}</h3>
-                          <p className="text-sm text-gray-600 mt-1">{role.description}</p>
-                        </div>
-                      </div>
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
-                  ))}
+                  </div>
                 </div>
+
+                {mode === 'signup' && (
+                  <div>
+                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                      {t('auth.confirmPassword')} *
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors pr-12"
+                        placeholder="Confirm your password"
+                        disabled={isLoading}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                        disabled={isLoading}
+                      >
+                        {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
 
             {error && (
-              <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-3 rounded-lg">
+              <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-4 rounded-lg border border-red-200">
                 <AlertCircle className="w-5 h-5" />
-                <span className="text-sm">{error}</span>
+                <span className="text-sm font-medium">{error}</span>
               </div>
             )}
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full bg-green-600 text-white py-4 px-6 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
             >
               {isLoading ? (
                 <>
@@ -326,24 +373,24 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-8 text-center">
             {mode === 'login' ? (
-              <p className="text-sm text-gray-600">
+              <p className="text-gray-600">
                 {t('auth.noAccount')}{' '}
                 <button
                   onClick={() => onNavigate('signup')}
-                  className="text-green-600 hover:text-green-700 font-medium"
+                  className="text-green-600 hover:text-green-700 font-semibold transition-colors"
                   disabled={isLoading}
                 >
                   {t('auth.signup')}
                 </button>
               </p>
             ) : (
-              <p className="text-sm text-gray-600">
+              <p className="text-gray-600">
                 {t('auth.haveAccount')}{' '}
                 <button
                   onClick={() => onNavigate('login')}
-                  className="text-green-600 hover:text-green-700 font-medium"
+                  className="text-green-600 hover:text-green-700 font-semibold transition-colors"
                   disabled={isLoading}
                 >
                   {t('auth.signin')}
@@ -354,7 +401,7 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
 
           {mode === 'login' && (
             <div className="mt-4 text-center">
-              <button className="text-sm text-gray-500 hover:text-gray-700">
+              <button className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
                 {t('auth.forgotPassword')}
               </button>
             </div>

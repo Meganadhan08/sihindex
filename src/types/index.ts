@@ -1,132 +1,86 @@
 export interface User {
   id: string;
   email: string;
-  password: string;
-  role: 'farmer' | 'lab' | 'processor' | 'admin';
+  role: 'farmer' | 'lab' | 'processor';
   name: string;
+  location?: string;
+  contact_number?: string;
   organization?: string;
   phone?: string;
   licenseNumber?: string;
-  location?: string;
   createdAt: string;
 }
 
 export interface SignupData {
   email: string;
   password: string;
-  fullName: string;
-  organization: string;
-  phone?: string;
-  role: 'farmer' | 'lab' | 'processor' | 'admin';
+  name: string;
+  location: string;
+  contact_number: string;
+  organization?: string;
+  role: 'farmer' | 'lab' | 'processor';
 }
 
-export interface HerbCollection {
+export interface BatchCollection {
   id: string;
-  farmerId: string;
-  herbName: string;
-  scientificName: string;
-  collectionDate: string;
-  collectionTime: string;
-  gpsCoordinates: {
-    latitude: number;
-    longitude: number;
-    altitude?: number;
+  farmer_id: string;
+  species: string;
+  quantity: number;
+  date: string;
+  gps?: {
+    lat: number;
+    lng: number;
   };
-  location: {
-    village: string;
-    district: string;
-    state: string;
-    country: string;
-  };
-  soilType: string;
-  weatherConditions: {
-    temperature: number;
-    humidity: number;
-    rainfall: string;
-  };
-  harvestingMethod: string;
-  quantityCollected: number;
-  unit: string;
-  plantAge: string;
-  plantPart: string;
-  organicCertification: boolean;
-  photos: string[];
-  blockchainHash: string;
-  qrCode: string;
+  photos?: string[];
+  quality_check?: string;
+  remarks?: string;
+  temperature?: number;
+  humidity?: number;
   status: 'collected' | 'in_transit' | 'received' | 'processed';
+}
+
+export interface HandoffEvent {
+  id: string;
+  batchId: string;
+  from: string;
+  to: string;
+  timestamp: string;
+  status: 'pending' | 'completed';
 }
 
 export interface LabTest {
   id: string;
-  collectionId: string;
+  batchId: string;
   labId: string;
   testDate: string;
   testType: string;
   parameters: {
     moisture: number;
     ash: number;
-    acidInsoluble: number;
-    waterSoluble: number;
-    alcoholSoluble: number;
     heavyMetals: {
       lead: number;
       mercury: number;
       arsenic: number;
-      cadmium: number;
     };
     microbialLoad: {
       totalBacterialCount: number;
-      yeastMold: number;
       ecoli: string;
       salmonella: string;
     };
-    activeCompounds: {
-      [key: string]: number;
-    };
-    pesticides: string;
-    aflatoxins: number;
   };
-  ayushCompliance: boolean;
-  certificateNumber: string;
-  testResult: 'passed' | 'failed' | 'conditional';
+  testResult: 'passed' | 'failed';
   remarks: string;
-  blockchainHash: string;
 }
 
 export interface ProcessingRecord {
   id: string;
-  collectionId: string;
+  batchId: string;
   processorId: string;
   processType: string;
   processDate: string;
   inputQuantity: number;
   outputQuantity: number;
   processingMethod: string;
-  temperature: number;
-  duration: string;
-  equipment: string;
   batchNumber: string;
-  expiryDate: string;
-  storageConditions: string;
   qualityGrade: string;
-  packaging: string;
-  blockchainHash: string;
-}
-
-export interface TraceabilityRecord {
-  collection: HerbCollection;
-  labTests: LabTest[];
-  processing: ProcessingRecord[];
-  timeline: TimelineEvent[];
-}
-
-export interface TimelineEvent {
-  id: string;
-  type: 'collection' | 'transport' | 'testing' | 'processing' | 'packaging' | 'distribution';
-  timestamp: string;
-  location: string;
-  actor: string;
-  description: string;
-  data: any;
-  blockchainHash: string;
 }

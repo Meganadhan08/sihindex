@@ -1,7 +1,11 @@
 import React from 'react';
-import { Users, Package, FlaskConical, Factory, TrendingUp, AlertTriangle, CheckCircle, Clock, BarChart3, Globe, Shield, Award } from 'lucide-react';
+import { Users, Package, FlaskConical, Factory, TrendingUp, AlertTriangle, CheckCircle, Clock, BarChart3, Globe, Shield, Award, ArrowLeft } from 'lucide-react';
 
-const AdminDashboard: React.FC = () => {
+interface AdminDashboardProps {
+  onBack?: () => void;
+}
+
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBack }) => {
   const systemStats = [
     { label: 'Total Collections', value: '1,247', icon: Package, color: 'text-green-600', bg: 'bg-green-100' },
     { label: 'Active Users', value: '89', icon: Users, color: 'text-blue-600', bg: 'bg-blue-100' },
@@ -74,168 +78,183 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">System Administration</h1>
-        <p className="text-gray-600">Monitor and manage the entire traceability ecosystem</p>
-      </div>
-
-      {/* System Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {systemStats.map((stat, index) => (
-          <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <div className="flex items-center">
-              <div className={`p-3 rounded-lg ${stat.bg}`}>
-                <stat.icon className={`w-6 h-6 ${stat.color}`} />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
-              </div>
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-4">
+              {onBack && (
+                <button 
+                  onClick={onBack}
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+              )}
+              <h1 className="text-xl font-semibold text-gray-900">System Administration</h1>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      </header>
 
-      {/* Quality Metrics */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-6">Quality & Compliance Metrics</h2>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* System Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {qualityMetrics.map((metric, index) => (
-            <div key={index} className="text-center">
-              <div className="flex items-center justify-center space-x-2 mb-2">
-                <span className="text-2xl font-bold text-gray-900">{metric.value}</span>
-                <span className={`text-sm font-medium ${metric.color}`}>{metric.trend}</span>
+          {systemStats.map((stat, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <div className="flex items-center">
+                <div className={`p-3 rounded-lg ${stat.bg}`}>
+                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">{stat.label}</p>
+                  <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
+                </div>
               </div>
-              <p className="text-sm text-gray-600">{metric.label}</p>
             </div>
           ))}
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Activity */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              {recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-start space-x-3">
-                  <div className={`p-2 rounded-full ${getStatusColor(activity.status)}`}>
-                    {getActivityIcon(activity.type)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-900">{activity.message}</p>
-                    <p className="text-xs text-gray-500">{activity.timestamp}</p>
-                  </div>
+        {/* Quality Metrics */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Quality & Compliance Metrics</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {qualityMetrics.map((metric, index) => (
+              <div key={index} className="text-center">
+                <div className="flex items-center justify-center space-x-2 mb-2">
+                  <span className="text-2xl font-bold text-gray-900">{metric.value}</span>
+                  <span className={`text-sm font-medium ${metric.color}`}>{metric.trend}</span>
                 </div>
-              ))}
-            </div>
+                <p className="text-sm text-gray-600">{metric.label}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* User Distribution */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">User Distribution</h2>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              {usersByRole.map((user, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-green-500 rounded-full" style={{
-                      backgroundColor: `hsl(${120 + index * 60}, 60%, 50%)`
-                    }}></div>
-                    <span className="text-sm font-medium text-gray-900">{user.role}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-600">{user.count}</span>
-                    <div className="w-20 bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-green-500 h-2 rounded-full" 
-                        style={{ 
-                          width: `${user.percentage}%`,
-                          backgroundColor: `hsl(${120 + index * 60}, 60%, 50%)`
-                        }}
-                      ></div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Recent Activity */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                {recentActivity.map((activity) => (
+                  <div key={activity.id} className="flex items-start space-x-3">
+                    <div className={`p-2 rounded-full ${getStatusColor(activity.status)}`}>
+                      {getActivityIcon(activity.type)}
                     </div>
-                    <span className="text-xs text-gray-500">{user.percentage}%</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-900">{activity.message}</p>
+                      <p className="text-xs text-gray-500">{activity.timestamp}</p>
+                    </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* User Distribution */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">User Distribution</h2>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                {usersByRole.map((user, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-3 h-3 bg-green-500 rounded-full" style={{
+                        backgroundColor: `hsl(${120 + index * 60}, 60%, 50%)`
+                      }}></div>
+                      <span className="text-sm font-medium text-gray-900">{user.role}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm text-gray-600">{user.count}</span>
+                      <div className="w-20 bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-green-500 h-2 rounded-full" 
+                          style={{ 
+                            width: `${user.percentage}%`,
+                            backgroundColor: `hsl(${120 + index * 60}, 60%, 50%)`
+                          }}
+                        ></div>
+                      </div>
+                      <span className="text-xs text-gray-500">{user.percentage}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* System Health */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">System Health & Security</h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="flex items-center space-x-3">
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <Shield className="w-6 h-6 text-green-600" />
                 </div>
-              ))}
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Blockchain Network</p>
+                  <p className="text-xs text-green-600">Operational</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Globe className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">API Services</p>
+                  <p className="text-xs text-blue-600">99.9% Uptime</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <BarChart3 className="w-6 h-6 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Data Integrity</p>
+                  <p className="text-xs text-purple-600">100% Verified</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* System Health */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">System Health & Security</h2>
-        </div>
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-center space-x-3">
-              <div className="p-3 bg-green-100 rounded-lg">
-                <Shield className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">Blockchain Network</p>
-                <p className="text-xs text-green-600">Operational</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <Globe className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">API Services</p>
-                <p className="text-xs text-blue-600">99.9% Uptime</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <BarChart3 className="w-6 h-6 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-900">Data Integrity</p>
-                <p className="text-xs text-purple-600">100% Verified</p>
-              </div>
+        {/* Quick Actions */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <button className="flex items-center space-x-2 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <Users className="w-5 h-5 text-gray-600" />
+                <span className="text-sm font-medium text-gray-900">Manage Users</span>
+              </button>
+              <button className="flex items-center space-x-2 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <Award className="w-5 h-5 text-gray-600" />
+                <span className="text-sm font-medium text-gray-900">View Certificates</span>
+              </button>
+              <button className="flex items-center space-x-2 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <BarChart3 className="w-5 h-5 text-gray-600" />
+                <span className="text-sm font-medium text-gray-900">Generate Reports</span>
+              </button>
+              <button className="flex items-center space-x-2 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                <Shield className="w-5 h-5 text-gray-600" />
+                <span className="text-sm font-medium text-gray-900">Security Audit</span>
+              </button>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
-        </div>
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <button className="flex items-center space-x-2 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <Users className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-900">Manage Users</span>
-            </button>
-            <button className="flex items-center space-x-2 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <Award className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-900">View Certificates</span>
-            </button>
-            <button className="flex items-center space-x-2 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <BarChart3 className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-900">Generate Reports</span>
-            </button>
-            <button className="flex items-center space-x-2 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <Shield className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-900">Security Audit</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
   );
 };
