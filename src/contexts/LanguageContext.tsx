@@ -68,6 +68,7 @@ const translations = {
     'dashboard.newRecord': 'New Record',
     'dashboard.recentActivity': 'Recent Activity',
     'dashboard.statistics': 'Statistics',
+    'dashboard.agent': 'Agent Portal',
     
     // Common
     'common.save': 'Save',
@@ -152,6 +153,7 @@ const translations = {
     'dashboard.newRecord': 'नया रिकॉर्ड',
     'dashboard.recentActivity': 'हाल की गतिविधि',
     'dashboard.statistics': 'आंकड़े',
+    'dashboard.agent': 'एजेंट पोर्टल',
     
     // Common
     'common.save': 'सेव करें',
@@ -236,6 +238,7 @@ const translations = {
     'dashboard.newRecord': 'புதிய பதிவு',
     'dashboard.recentActivity': 'சமீபத்திய செயல்பாடு',
     'dashboard.statistics': 'புள்ளிவிவரங்கள்',
+    'dashboard.agent': 'முகவர் போர்டல்',
     
     // Common
     'common.save': 'சேமிக்கவும்',
@@ -320,6 +323,7 @@ const translations = {
     'dashboard.newRecord': 'కొత్త రికార్డ్',
     'dashboard.recentActivity': 'ఇటీవలి కార్యకలాపం',
     'dashboard.statistics': 'గణాంకాలు',
+    'dashboard.agent': 'ఏజెంట్ పోర్టల్',
     
     // Common
     'common.save': 'సేవ్ చేయండి',
@@ -404,6 +408,7 @@ const translations = {
     'dashboard.newRecord': 'ಹೊಸ ದಾಖಲೆ',
     'dashboard.recentActivity': 'ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ',
     'dashboard.statistics': 'ಅಂಕಿಅಂಶಗಳು',
+    'dashboard.agent': 'ಏಜೆಂಟ್ ಪೋರ್ಟಲ್',
     
     // Common
     'common.save': 'ಉಳಿಸಿ',

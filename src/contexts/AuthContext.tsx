@@ -48,14 +48,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return true;
     }
     
-    // Get users from localStorage (in real app, this would be API call)
-    const storedUsers = JSON.parse(localStorage.getItem('herbTrace_users') || '[]');
-    const foundUser = storedUsers.find((u: any) => u.email === email && u.password === password);
+    // For demo purposes, we'll just check if user exists in localStorage
+    // In real app, this would be API call to backend
+    const demoUsers = [
+      { email: 'farmer@example.com', password: 'password123', role: 'farmer', name: 'John Farmer' },
+      { email: 'lab@example.com', password: 'password123', role: 'lab', name: 'Lab Technician' },
+      { email: 'processor@example.com', password: 'password123', role: 'processor', name: 'Processor Manager' }
+    ];
+    
+    const foundUser = demoUsers.find(u => u.email === email && u.password === password);
     
     if (foundUser) {
-      const { password: _, ...userWithoutPassword } = foundUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('herbTrace_user', JSON.stringify(userWithoutPassword));
+      const user: User = {
+        id: Date.now().toString(),
+        email: foundUser.email,
+        role: foundUser.role as 'farmer' | 'lab' | 'processor',
+        name: foundUser.name,
+        location: 'Demo Location',
+        contact_number: '+91 9876543210',
+        createdAt: new Date().toISOString()
+      };
+      
+      setUser(user);
+      localStorage.setItem('herbTrace_user', JSON.stringify(user));
       setIsLoading(false);
       return true;
     }
@@ -71,15 +86,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     try {
-      // Get existing users
-      const storedUsers = JSON.parse(localStorage.getItem('herbTrace_users') || '[]');
-      
-      // Check if user already exists
-      if (storedUsers.find((u: any) => u.email === data.email)) {
-        setIsLoading(false);
-        return false;
-      }
-      
       // Create new user
       const newUser: User = {
         id: Date.now().toString(),
@@ -93,12 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         createdAt: new Date().toISOString()
       };
       
-      // Save user with password for login (in real app, password would be hashed)
-      const userWithPassword = { ...newUser, password: data.password };
-      storedUsers.push(userWithPassword);
-      localStorage.setItem('herbTrace_users', JSON.stringify(storedUsers));
-      
-      // Set current user (without password)
+      // Set current user
       setUser(newUser);
       localStorage.setItem('herbTrace_user', JSON.stringify(newUser));
       

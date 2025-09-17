@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Plus, FlaskConical, Award, AlertTriangle, TrendingUp, FileText, Download, Upload, ArrowLeft } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface LabDashboardProps {
   onBack?: () => void;
 }
 
 const LabDashboard: React.FC<LabDashboardProps> = ({ onBack }) => {
+  const { t } = useLanguage();
   const [showTestForm, setShowTestForm] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState('');
 
@@ -56,7 +58,7 @@ const LabDashboard: React.FC<LabDashboardProps> = ({ onBack }) => {
                   <ArrowLeft className="w-5 h-5" />
                 </button>
               )}
-              <h1 className="text-xl font-semibold text-gray-900">Laboratory Dashboard</h1>
+              <h1 className="text-xl font-semibold text-gray-900">{t('role.lab')} {t('nav.dashboard')}</h1>
             </div>
             <button
               onClick={() => setShowTestForm(true)}
@@ -276,7 +278,7 @@ const LabDashboard: React.FC<LabDashboardProps> = ({ onBack }) => {
                   onClick={() => setShowTestForm(false)}
                   className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </button>
                 <button
                   type="submit"

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Plus, Package, TrendingUp, Users, Award, Factory, ArrowLeft } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface ProcessorDashboardProps {
   onBack?: () => void;
 }
 
 const ProcessorDashboard: React.FC<ProcessorDashboardProps> = ({ onBack }) => {
+  const { t } = useLanguage();
   const [showProcessForm, setShowProcessForm] = useState(false);
 
   const processingRecords = [
@@ -45,7 +47,7 @@ const ProcessorDashboard: React.FC<ProcessorDashboardProps> = ({ onBack }) => {
                   <ArrowLeft className="w-5 h-5" />
                 </button>
               )}
-              <h1 className="text-xl font-semibold text-gray-900">Processor Dashboard</h1>
+              <h1 className="text-xl font-semibold text-gray-900">{t('role.processor')} {t('nav.dashboard')}</h1>
             </div>
             <button
               onClick={() => setShowProcessForm(true)}
@@ -275,7 +277,7 @@ const ProcessorDashboard: React.FC<ProcessorDashboardProps> = ({ onBack }) => {
                   onClick={() => setShowProcessForm(false)}
                   className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </button>
                 <button
                   type="submit"
