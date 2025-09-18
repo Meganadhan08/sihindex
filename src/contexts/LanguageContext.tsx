@@ -5,7 +5,6 @@ interface LanguageContextType {
   setLanguage: (lang: string) => void;
   t: (key: string) => string;
 }
-
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const translations = {
@@ -19,13 +18,13 @@ const translations = {
     'nav.signup': 'Sign Up',
     'nav.dashboard': 'Dashboard',
     'nav.logout': 'Logout',
-    
+
     // Landing Page
     'hero.title': 'Blockchain-Powered Ayurvedic Herb Traceability',
     'hero.subtitle': 'Complete transparency from farm to formulation. Track every Ayurvedic herb through its journey with geo-tagged precision and blockchain security.',
     'hero.cta.primary': 'Get Started',
     'hero.cta.secondary': 'Learn More',
-    
+
     // Features
     'features.title': 'Revolutionary Traceability Features',
     'features.subtitle': 'Our blockchain-based system provides unprecedented transparency and authenticity verification for Ayurvedic herbs.',
@@ -37,7 +36,7 @@ const translations = {
     'features.quality.desc': 'Lab-verified quality parameters and compliance certifications',
     'features.realtime.title': 'Real-time Tracking',
     'features.realtime.desc': 'Monitor your herbs through every stage of the supply chain',
-    
+
     // Authentication
     'auth.signin': 'Sign In',
     'auth.signup': 'Sign Up',
@@ -53,7 +52,7 @@ const translations = {
     'auth.haveAccount': 'Already have an account?',
     'auth.noAccount': "Don't have an account?",
     'auth.forgotPassword': 'Forgot Password?',
-    
+
     // Roles
     'role.farmer': 'Farmer/Collector',
     'role.farmer.desc': 'Record herb collections with GPS coordinates and environmental data',
@@ -61,15 +60,14 @@ const translations = {
     'role.lab.desc': 'Conduct quality testing and issue compliance certificates',
     'role.processor': 'Processor/Manufacturer',
     'role.processor.desc': 'Process herbs and create final products with batch tracking',
-    
+
     // Dashboard
     'dashboard.welcome': 'Welcome',
     'dashboard.overview': 'Overview',
     'dashboard.newRecord': 'New Record',
     'dashboard.recentActivity': 'Recent Activity',
     'dashboard.statistics': 'Statistics',
-    'dashboard.agent': 'Agent Portal',
-    
+
     // Common
     'common.save': 'Save',
     'common.cancel': 'Cancel',
@@ -86,7 +84,7 @@ const translations = {
     'common.view': 'View',
     'common.download': 'Download',
     'common.upload': 'Upload',
-    
+
     // Footer
     'footer.about': 'About HerbTrace',
     'footer.privacy': 'Privacy Policy',
@@ -153,7 +151,6 @@ const translations = {
     'dashboard.newRecord': 'नया रिकॉर्ड',
     'dashboard.recentActivity': 'हाल की गतिविधि',
     'dashboard.statistics': 'आंकड़े',
-    'dashboard.agent': 'एजेंट पोर्टल',
     
     // Common
     'common.save': 'सेव करें',
@@ -238,7 +235,6 @@ const translations = {
     'dashboard.newRecord': 'புதிய பதிவு',
     'dashboard.recentActivity': 'சமீபத்திய செயல்பாடு',
     'dashboard.statistics': 'புள்ளிவிவரங்கள்',
-    'dashboard.agent': 'முகவர் போர்டல்',
     
     // Common
     'common.save': 'சேமிக்கவும்',
@@ -323,7 +319,6 @@ const translations = {
     'dashboard.newRecord': 'కొత్త రికార్డ్',
     'dashboard.recentActivity': 'ఇటీవలి కార్యకలాపం',
     'dashboard.statistics': 'గణాంకాలు',
-    'dashboard.agent': 'ఏజెంట్ పోర్టల్',
     
     // Common
     'common.save': 'సేవ్ చేయండి',
@@ -351,7 +346,7 @@ const translations = {
   },
   kn: {
     // Navigation
-    'nav.home': 'ಮುಖ್ಯಪುಟ',
+    'nav.home': 'ಮುಖಪುಟ',
     'nav.features': 'ವೈಶಿಷ್ಟ್ಯಗಳು',
     'nav.about': 'ನಮ್ಮ ಬಗ್ಗೆ',
     'nav.contact': 'ಸಂಪರ್ಕಿಸಿ',
@@ -359,25 +354,25 @@ const translations = {
     'nav.signup': 'ಸೈನ್ ಅಪ್',
     'nav.dashboard': 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
     'nav.logout': 'ಲಾಗ್ ಔಟ್',
-    
+
     // Landing Page
-    'hero.title': 'ಬ್ಲಾಕ್‌ಚೈನ್-ಚಾಲಿತ ಆಯುರ್ವೇದ ಮೂಲಿಕೆ ಪತ್ತೆಹಚ್ಚುವಿಕೆ',
-    'hero.subtitle': 'ಫಾರ್ಮ್‌ನಿಂದ ಫಾರ್ಮುಲೇಷನ್‌ವರೆಗೆ ಸಂಪೂರ್ಣ ಪಾರದರ್ಶಕತೆ. ಜಿಯೋ-ಟ್ಯಾಗ್ ಮಾಡಿದ ನಿಖರತೆ ಮತ್ತು ಬ್ಲಾಕ್‌ಚೈನ್ ಭದ್ರತೆಯೊಂದಿಗೆ ಪ್ರತಿ ಆಯುರ್ವೇದ ಮೂಲಿಕೆಯ ಪ್ರಯಾಣವನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ.',
+    'hero.title': 'ಬ್ಲಾಕ್‌ಚೈನ್ ಆಧಾರಿತ ಆಯುರ್ವೇದ ಸಸ್ಯಗಳ ಹಾದಿ-ಹುಡುಕಾಟ',
+    'hero.subtitle': 'ಜಮೀನಿನಿಂದ ಫಾರ್ಮುಲೇಶನ್‌ವರೆಗೆ ಸಂಪೂರ್ಣ ಪಾರದರ್ಶಕತೆ. ಜಿಯೋ-ಟ್ಯಾಗ್ ಮಾಡಿದ ನಿಖರತೆ ಮತ್ತು ಬ್ಲಾಕ್‌ಚೈನ್ ಭದ್ರತೆಯೊಂದಿಗೆ ಪ್ರತಿಯೊಂದು ಆಯುರ್ವೇದ ಸಸ್ಯದ ಪ್ರಯಾಣವನ್ನು ಟ್ರಾಕ್ ಮಾಡಿ.',
     'hero.cta.primary': 'ಪ್ರಾರಂಭಿಸಿ',
     'hero.cta.secondary': 'ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ',
-    
+
     // Features
-    'features.title': 'ಕ್ರಾಂತಿಕಾರಿ ಪತ್ತೆಹಚ್ಚುವಿಕೆ ವೈಶಿಷ್ಟ್ಯಗಳು',
-    'features.subtitle': 'ನಮ್ಮ ಬ್ಲಾಕ್‌ಚೈನ್-ಆಧಾರಿತ ವ್ಯವಸ್ಥೆಯು ಆಯುರ್ವೇದ ಮೂಲಿಕೆಗಳಿಗೆ ಅಭೂತಪೂರ್ವ ಪಾರದರ್ಶಕತೆ ಮತ್ತು ಸತ್ಯತೆ ಪರಿಶೀಲನೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ.',
+    'features.title': 'ಕ್ರಾಂತಿಕಾರಿ ಹಾದಿ-ಹುಡುಕಾಟ ವೈಶಿಷ್ಟ್ಯಗಳು',
+    'features.subtitle': 'ನಮ್ಮ ಬ್ಲಾಕ್‌ಚೈನ್ ಆಧಾರಿತ ವ್ಯವಸ್ಥೆ ಆಯುರ್ವೇದ ಸಸ್ಯಗಳಿಗೆ ಅಪೂರ್ವ ಪಾರದರ್ಶಕತೆ ಮತ್ತು ನೈಜತೆಯ ಪರಿಶೀಲನೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ.',
     'features.geotagged.title': 'ಜಿಯೋ-ಟ್ಯಾಗ್ ಮಾಡಿದ ಸಂಗ್ರಹ',
-    'features.geotagged.desc': 'ಸಂಗ್ರಹ ಬಿಂದುಗಳ ನಿಖರವಾದ GPS ನಿರ್ದೇಶಾಂಕಗಳಿಂದ ಮೂಲಿಕೆಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ',
+    'features.geotagged.desc': 'ಸಂಗ್ರಹ ಬಿಂದುಗಳ ನಿಖರ GPS ನಿರ್ದೇಶಾಂಕಗಳಿಂದ ಸಸ್ಯಗಳನ್ನು ಟ್ರಾಕ್ ಮಾಡಿ',
     'features.blockchain.title': 'ಬ್ಲಾಕ್‌ಚೈನ್ ಭದ್ರತೆ',
-    'features.blockchain.desc': 'ಬದಲಾಯಿಸಲಾಗದ ದಾಖಲೆಗಳು ಸತ್ಯತೆಯನ್ನು ಖಚಿತಪಡಿಸುತ್ತವೆ ಮತ್ತು ಟ್ಯಾಂಪರಿಂಗ್ ಅನ್ನು ತಡೆಯುತ್ತವೆ',
+    'features.blockchain.desc': 'ಅಮಿಟವಾದ ದಾಖಲೆಗಳು ನೈಜತೆಯನ್ನು ಖಚಿತಪಡಿಸುತ್ತವೆ ಮತ್ತು ತಿರುಚುವಿಕೆಯನ್ನು ತಡೆಯುತ್ತವೆ',
     'features.quality.title': 'ಗುಣಮಟ್ಟದ ಭರವಸೆ',
-    'features.quality.desc': 'ಲ್ಯಾಬ್-ಪರಿಶೀಲಿತ ಗುಣಮಟ್ಟದ ನಿಯತಾಂಕಗಳು ಮತ್ತು ಅನುಸರಣೆ ಪ್ರಮಾಣಪತ್ರಗಳು',
-    'features.realtime.title': 'ನೈಜ-ಸಮಯ ಟ್ರ್ಯಾಕಿಂಗ್',
-    'features.realtime.desc': 'ಪೂರೈಕೆ ಸರಪಳಿಯ ಪ್ರತಿ ಹಂತದಲ್ಲಿ ನಿಮ್ಮ ಮೂಲಿಕೆಗಳನ್ನು ಮೇಲ್ವಿಚಾರಣೆ ಮಾಡಿ',
-    
+    'features.quality.desc': 'ಪ್ರಯೋಗಾಲಯ ಪರಿಶೀಲಿತ ಗುಣಮಟ್ಟದ ಮಾನದಂಡಗಳು ಮತ್ತು ಅನುಕೂಲ ಪ್ರಮಾಣಪತ್ರಗಳು',
+    'features.realtime.title': 'ರಿಯಲ್-ಟೈಮ್ ಟ್ರ್ಯಾಕಿಂಗ್',
+    'features.realtime.desc': 'ಸರಬರಾಜು ಸರಪಳಿಯ ಪ್ರತಿಯೊಂದು ಹಂತದಲ್ಲೂ ನಿಮ್ಮ ಸಸ್ಯಗಳನ್ನು ನಿಗಾಲಿಸಿ',
+
     // Authentication
     'auth.signin': 'ಸೈನ್ ಇನ್',
     'auth.signup': 'ಸೈನ್ ಅಪ್',
@@ -393,23 +388,22 @@ const translations = {
     'auth.haveAccount': 'ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ?',
     'auth.noAccount': 'ಖಾತೆ ಇಲ್ಲವೇ?',
     'auth.forgotPassword': 'ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?',
-    
+
     // Roles
     'role.farmer': 'ರೈತ/ಸಂಗ್ರಾಹಕ',
     'role.farmer.desc': 'GPS ನಿರ್ದೇಶಾಂಕಗಳು ಮತ್ತು ಪರಿಸರ ಡೇಟಾದೊಂದಿಗೆ ಮೂಲಿಕೆ ಸಂಗ್ರಹವನ್ನು ದಾಖಲಿಸಿ',
     'role.lab': 'ಪ್ರಯೋಗಾಲಯ',
     'role.lab.desc': 'ಗುಣಮಟ್ಟದ ಪರೀಕ್ಷೆ ನಡೆಸಿ ಮತ್ತು ಅನುಸರಣೆ ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ನೀಡಿ',
     'role.processor': 'ಪ್ರೊಸೆಸರ್/ತಯಾರಕ',
-    'role.processor.desc': 'ಬ್ಯಾಚ್ ಟ್ರ್ಯಾಕಿಂಗ್‌ನೊಂದಿಗೆ ಮೂಲಿಕೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಿ ಮತ್ತು ಅಂತಿಮ ಉತ್ಪನ್ನಗಳನ್ನು ರಚಿಸಿ',
-    
+    'role.processor.desc': 'బ್ಯాచ్ ಟ್ರಾಕింగ్‌ನೊಂದಿಗೆ ಮೂಲಿಕೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಿ ಮತ್ತು ಅಂತಿಮ ಉತ್ಪನ್ನಗಳನ್ನು ರಚಿಸಿ',
+
     // Dashboard
     'dashboard.welcome': 'ಸ್ವಾಗತ',
     'dashboard.overview': 'ಅವಲೋಕನ',
     'dashboard.newRecord': 'ಹೊಸ ದಾಖಲೆ',
     'dashboard.recentActivity': 'ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ',
     'dashboard.statistics': 'ಅಂಕಿಅಂಶಗಳು',
-    'dashboard.agent': 'ಏಜೆಂಟ್ ಪೋರ್ಟಲ್',
-    
+
     // Common
     'common.save': 'ಉಳಿಸಿ',
     'common.cancel': 'ರದ್ದುಮಾಡಿ',
@@ -426,7 +420,7 @@ const translations = {
     'common.view': 'ವೀಕ್ಷಿಸಿ',
     'common.download': 'ಡೌನ್‌ಲೋಡ್',
     'common.upload': 'ಅಪ್‌ಲೋಡ್',
-    
+
     // Footer
     'footer.about': 'HerbTrace ಬಗ್ಗೆ',
     'footer.privacy': 'ಗೌಪ್ಯತೆ ನೀತಿ',
