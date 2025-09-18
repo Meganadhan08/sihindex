@@ -3,10 +3,9 @@ export interface User {
   email: string;
   role: 'farmer' | 'lab' | 'processor';
   name: string;
-  location?: string;
-  contact_number?: string;
+  location: string;
+  contact_number: string;
   organization?: string;
-  phone?: string;
   licenseNumber?: string;
   createdAt: string;
 }
