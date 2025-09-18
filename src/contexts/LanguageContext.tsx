@@ -5,7 +5,6 @@ interface LanguageContextType {
   setLanguage: (lang: string) => void;
   t: (key: string) => string;
 }
-
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const translations = {
@@ -19,13 +18,13 @@ const translations = {
     'nav.signup': 'Sign Up',
     'nav.dashboard': 'Dashboard',
     'nav.logout': 'Logout',
-    
+
     // Landing Page
     'hero.title': 'Blockchain-Powered Ayurvedic Herb Traceability',
     'hero.subtitle': 'Complete transparency from farm to formulation. Track every Ayurvedic herb through its journey with geo-tagged precision and blockchain security.',
     'hero.cta.primary': 'Get Started',
     'hero.cta.secondary': 'Learn More',
-    
+
     // Features
     'features.title': 'Revolutionary Traceability Features',
     'features.subtitle': 'Our blockchain-based system provides unprecedented transparency and authenticity verification for Ayurvedic herbs.',
@@ -37,22 +36,23 @@ const translations = {
     'features.quality.desc': 'Lab-verified quality parameters and compliance certifications',
     'features.realtime.title': 'Real-time Tracking',
     'features.realtime.desc': 'Monitor your herbs through every stage of the supply chain',
-    
+
     // Authentication
     'auth.signin': 'Sign In',
     'auth.signup': 'Sign Up',
     'auth.email': 'Email Address',
     'auth.password': 'Password',
     'auth.confirmPassword': 'Confirm Password',
-    'auth.fullName': 'Full Name',
+    'auth.name': 'Full Name',
+    'auth.location': 'Location',
+    'auth.contact': 'Contact Number',
     'auth.organization': 'Organization',
-    'auth.phone': 'Phone Number',
     'auth.selectRole': 'Select Your Role',
     'auth.createAccount': 'Create Account',
     'auth.haveAccount': 'Already have an account?',
     'auth.noAccount': "Don't have an account?",
     'auth.forgotPassword': 'Forgot Password?',
-    
+
     // Roles
     'role.farmer': 'Farmer/Collector',
     'role.farmer.desc': 'Record herb collections with GPS coordinates and environmental data',
@@ -60,16 +60,14 @@ const translations = {
     'role.lab.desc': 'Conduct quality testing and issue compliance certificates',
     'role.processor': 'Processor/Manufacturer',
     'role.processor.desc': 'Process herbs and create final products with batch tracking',
-    'role.admin': 'Admin/Supervisor',
-    'role.admin.desc': 'Monitor system-wide operations and manage compliance',
-    
+
     // Dashboard
     'dashboard.welcome': 'Welcome',
     'dashboard.overview': 'Overview',
     'dashboard.newRecord': 'New Record',
     'dashboard.recentActivity': 'Recent Activity',
     'dashboard.statistics': 'Statistics',
-    
+
     // Common
     'common.save': 'Save',
     'common.cancel': 'Cancel',
@@ -86,7 +84,7 @@ const translations = {
     'common.view': 'View',
     'common.download': 'Download',
     'common.upload': 'Upload',
-    
+
     // Footer
     'footer.about': 'About HerbTrace',
     'footer.privacy': 'Privacy Policy',
@@ -129,9 +127,10 @@ const translations = {
     'auth.email': 'ईमेल पता',
     'auth.password': 'पासवर्ड',
     'auth.confirmPassword': 'पासवर्ड की पुष्टि करें',
-    'auth.fullName': 'पूरा नाम',
+    'auth.name': 'पूरा नाम',
+    'auth.location': 'स्थान',
+    'auth.contact': 'संपर्क नंबर',
     'auth.organization': 'संगठन',
-    'auth.phone': 'फोन नंबर',
     'auth.selectRole': 'अपनी भूमिका चुनें',
     'auth.createAccount': 'खाता बनाएं',
     'auth.haveAccount': 'पहले से खाता है?',
@@ -145,8 +144,6 @@ const translations = {
     'role.lab.desc': 'गुणवत्ता परीक्षण करें और अनुपालन प्रमाणपत्र जारी करें',
     'role.processor': 'प्रोसेसर/निर्माता',
     'role.processor.desc': 'बैच ट्रैकिंग के साथ जड़ी-बूटियों को प्रोसेस करें और अंतिम उत्पाद बनाएं',
-    'role.admin': 'एडमिन/सुपरवाइजर',
-    'role.admin.desc': 'सिस्टम-व्यापी संचालन की निगरानी करें और अनुपालन प्रबंधित करें',
     
     // Dashboard
     'dashboard.welcome': 'स्वागत',
@@ -214,9 +211,10 @@ const translations = {
     'auth.email': 'மின்னஞ்சல் முகவரி',
     'auth.password': 'கடவுச்சொல்',
     'auth.confirmPassword': 'கடவுச்சொல்லை உறுதிப்படுத்தவும்',
-    'auth.fullName': 'முழு பெயர்',
+    'auth.name': 'முழு பெயர்',
+    'auth.location': 'இடம்',
+    'auth.contact': 'தொடர்பு எண்',
     'auth.organization': 'அமைப்பு',
-    'auth.phone': 'தொலைபேசி எண்',
     'auth.selectRole': 'உங்கள் பாத்திரத்தைத் தேர்ந்தெடுக்கவும்',
     'auth.createAccount': 'கணக்கை உருவாக்கவும்',
     'auth.haveAccount': 'ஏற்கனவே கணக்கு உள்ளதா?',
@@ -230,8 +228,6 @@ const translations = {
     'role.lab.desc': 'தர சோதனை நடத்தி இணக்க சான்றிதழ்களை வழங்கவும்',
     'role.processor': 'செயலாளர்/உற்பத்தியாளர்',
     'role.processor.desc': 'பேட்ச் கண்காணிப்புடன் மூலிகைகளைச் செயலாக்கி இறுதி தயாரிப்புகளை உருவாக்கவும்',
-    'role.admin': 'நிர்வாகி/மேற்பார்வையாளர்',
-    'role.admin.desc': 'கணினி அளவிலான செயல்பாடுகளைக் கண்காணித்து இணக்கத்தை நிர்வகிக்கவும்',
     
     // Dashboard
     'dashboard.welcome': 'வரவேற்கிறோம்',
@@ -299,9 +295,10 @@ const translations = {
     'auth.email': 'ఇమెయిల్ చిరునామా',
     'auth.password': 'పాస్‌వర్డ్',
     'auth.confirmPassword': 'పాస్‌వర్డ్‌ను నిర్ధారించండి',
-    'auth.fullName': 'పూర్తి పేరు',
+    'auth.name': 'పూర్తి పేరు',
+    'auth.location': 'స్థానం',
+    'auth.contact': 'సంప్రదింపు నంబర్',
     'auth.organization': 'సంస్థ',
-    'auth.phone': 'ఫోన్ నంబర్',
     'auth.selectRole': 'మీ పాత్రను ఎంచుకోండి',
     'auth.createAccount': 'ఖాతా సృష్టించండి',
     'auth.haveAccount': 'ఇప్పటికే ఖాతా ఉందా?',
@@ -315,8 +312,6 @@ const translations = {
     'role.lab.desc': 'నాణ్యత పరీక్షలు నిర్వహించి సమ్మతి ధృవపత్రాలను జారీ చేయండి',
     'role.processor': 'ప్రాసెసర్/తయారీదారు',
     'role.processor.desc': 'బ్యాచ్ ట్రాకింగ్‌తో మూలికలను ప్రాసెస్ చేసి తుది ఉత్పత్తులను సృష్టించండి',
-    'role.admin': 'అడ్మిన్/సూపర్‌వైజర్',
-    'role.admin.desc': 'సిస్టమ్-వ్యాప్త కార్యకలాపాలను పర్యవేక్షించండి మరియు సమ్మతిని నిర్వహించండి',
     
     // Dashboard
     'dashboard.welcome': 'స్వాగతం',
@@ -359,13 +354,13 @@ const translations = {
     'nav.signup': 'ಸೈನ್ ಅಪ್',
     'nav.dashboard': 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
     'nav.logout': 'ಲಾಗ್ ಔಟ್',
-    
+
     // Landing Page
     'hero.title': 'ಬ್ಲಾಕ್‌ಚೈನ್ ಆಧಾರಿತ ಆಯುರ್ವೇದ ಸಸ್ಯಗಳ ಹಾದಿ-ಹುಡುಕಾಟ',
     'hero.subtitle': 'ಜಮೀನಿನಿಂದ ಫಾರ್ಮುಲೇಶನ್‌ವರೆಗೆ ಸಂಪೂರ್ಣ ಪಾರದರ್ಶಕತೆ. ಜಿಯೋ-ಟ್ಯಾಗ್ ಮಾಡಿದ ನಿಖರತೆ ಮತ್ತು ಬ್ಲಾಕ್‌ಚೈನ್ ಭದ್ರತೆಯೊಂದಿಗೆ ಪ್ರತಿಯೊಂದು ಆಯುರ್ವೇದ ಸಸ್ಯದ ಪ್ರಯಾಣವನ್ನು ಟ್ರಾಕ್ ಮಾಡಿ.',
     'hero.cta.primary': 'ಪ್ರಾರಂಭಿಸಿ',
     'hero.cta.secondary': 'ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ',
-    
+
     // Features
     'features.title': 'ಕ್ರಾಂತಿಕಾರಿ ಹಾದಿ-ಹುಡುಕಾಟ ವೈಶಿಷ್ಟ್ಯಗಳು',
     'features.subtitle': 'ನಮ್ಮ ಬ್ಲಾಕ್‌ಚೈನ್ ಆಧಾರಿತ ವ್ಯವಸ್ಥೆ ಆಯುರ್ವೇದ ಸಸ್ಯಗಳಿಗೆ ಅಪೂರ್ವ ಪಾರದರ್ಶಕತೆ ಮತ್ತು ನೈಜತೆಯ ಪರಿಶೀಲನೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ.',
@@ -377,42 +372,41 @@ const translations = {
     'features.quality.desc': 'ಪ್ರಯೋಗಾಲಯ ಪರಿಶೀಲಿತ ಗುಣಮಟ್ಟದ ಮಾನದಂಡಗಳು ಮತ್ತು ಅನುಕೂಲ ಪ್ರಮಾಣಪತ್ರಗಳು',
     'features.realtime.title': 'ರಿಯಲ್-ಟೈಮ್ ಟ್ರ್ಯಾಕಿಂಗ್',
     'features.realtime.desc': 'ಸರಬರಾಜು ಸರಪಳಿಯ ಪ್ರತಿಯೊಂದು ಹಂತದಲ್ಲೂ ನಿಮ್ಮ ಸಸ್ಯಗಳನ್ನು ನಿಗಾಲಿಸಿ',
-    
+
     // Authentication
     'auth.signin': 'ಸೈನ್ ಇನ್',
     'auth.signup': 'ಸೈನ್ ಅಪ್',
     'auth.email': 'ಇಮೇಲ್ ವಿಳಾಸ',
-    'auth.password': 'ಪಾಸ್ವರ್ಡ್',
-    'auth.confirmPassword': 'ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ',
-    'auth.fullName': 'ಪೂರ್ಣ ಹೆಸರು',
+    'auth.password': 'ಪಾಸ್‌ವರ್ಡ್',
+    'auth.confirmPassword': 'ಪಾಸ್‌ವರ್ಡ್ ದೃಢೀಕರಿಸಿ',
+    'auth.name': 'ಪೂರ್ಣ ಹೆಸರು',
+    'auth.location': 'ಸ್ಥಳ',
+    'auth.contact': 'ಸಂಪರ್ಕ ಸಂಖ್ಯೆ',
     'auth.organization': 'ಸಂಸ್ಥೆ',
-    'auth.phone': 'ಫೋನ್ ಸಂಖ್ಯೆ',
-    'auth.selectRole': 'ನಿಮ್ಮ ಪಾತ್ರವನ್ನು ಆರಿಸಿ',
+    'auth.selectRole': 'ನಿಮ್ಮ ಪಾತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ',
     'auth.createAccount': 'ಖಾತೆ ರಚಿಸಿ',
     'auth.haveAccount': 'ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ?',
     'auth.noAccount': 'ಖಾತೆ ಇಲ್ಲವೇ?',
-    'auth.forgotPassword': 'ಪಾಸ್ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?',
-    
+    'auth.forgotPassword': 'ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?',
+
     // Roles
-    'role.farmer': 'ಕೃಷಿಕ/ಸಂಗ್ರಹಕ',
-    'role.farmer.desc': 'GPS ನಿರ್ದೇಶಾಂಕಗಳು ಮತ್ತು ಪರಿಸರದ ಡೇಟಾದೊಂದಿಗೆ ಸಸ್ಯ ಸಂಗ್ರಹವನ್ನು ದಾಖಲಿಸಿ',
+    'role.farmer': 'ರೈತ/ಸಂಗ್ರಾಹಕ',
+    'role.farmer.desc': 'GPS ನಿರ್ದೇಶಾಂಕಗಳು ಮತ್ತು ಪರಿಸರ ಡೇಟಾದೊಂದಿಗೆ ಮೂಲಿಕೆ ಸಂಗ್ರಹವನ್ನು ದಾಖಲಿಸಿ',
     'role.lab': 'ಪ್ರಯೋಗಾಲಯ',
-    'role.lab.desc': 'ಗುಣಮಟ್ಟ ಪರೀಕ್ಷೆ ನಡೆಸಿ ಮತ್ತು ಅನುಮೋದನಾ ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ನೀಡಿ',
+    'role.lab.desc': 'ಗುಣಮಟ್ಟದ ಪರೀಕ್ಷೆ ನಡೆಸಿ ಮತ್ತು ಅನುಸರಣೆ ಪ್ರಮಾಣಪತ್ರಗಳನ್ನು ನೀಡಿ',
     'role.processor': 'ಪ್ರೊಸೆಸರ್/ತಯಾರಕ',
-    'role.processor.desc': 'ಬ್ಯಾಚ್ ಟ್ರ್ಯಾಕಿಂಗ್‌ನೊಂದಿಗೆ ಸಸ್ಯಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಿ ಮತ್ತು ಅಂತಿಮ ಉತ್ಪನ್ನಗಳನ್ನು ತಯಾರಿಸಿ',
-    'role.admin': 'ನಿರ್ವಹಣಾಧಿಕಾರಿ/ಮೇಲ್ವಿಚಾರಕ',
-    'role.admin.desc': 'ವ್ಯವಸ್ಥಾ ಮಟ್ಟದ ಕಾರ್ಯಾಚರಣೆಗಳನ್ನು ನಿಗಾಲಿಸಿ ಮತ್ತು ಅನುಕೂಲ ನಿರ್ವಹಿಸಿ',
-    
+    'role.processor.desc': 'బ್ಯాచ్ ಟ್ರಾಕింగ్‌ನೊಂದಿಗೆ ಮೂಲಿಕೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಿ ಮತ್ತು ಅಂತಿಮ ಉತ್ಪನ್ನಗಳನ್ನು ರಚಿಸಿ',
+
     // Dashboard
     'dashboard.welcome': 'ಸ್ವಾಗತ',
     'dashboard.overview': 'ಅವಲೋಕನ',
-    'dashboard.newRecord': 'ಹೊಸ ದಾಖಲಾತಿ',
+    'dashboard.newRecord': 'ಹೊಸ ದಾಖಲೆ',
     'dashboard.recentActivity': 'ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ',
-    'dashboard.statistics': 'ಅಂಕಿ-ಅಂಶಗಳು',
-    
+    'dashboard.statistics': 'ಅಂಕಿಅಂಶಗಳು',
+
     // Common
     'common.save': 'ಉಳಿಸಿ',
-    'common.cancel': 'ರದ್ದುಗೊಳಿಸಿ',
+    'common.cancel': 'ರದ್ದುಮಾಡಿ',
     'common.submit': 'ಸಲ್ಲಿಸಿ',
     'common.loading': 'ಲೋಡ್ ಆಗುತ್ತಿದೆ...',
     'common.error': 'ದೋಷ',
@@ -422,20 +416,19 @@ const translations = {
     'common.export': 'ರಫ್ತು',
     'common.import': 'ಆಮದು',
     'common.delete': 'ಅಳಿಸಿ',
-    'common.edit': 'ತಿದ್ದು',
-    'common.view': 'ನೋಡಿ',
+    'common.edit': 'ಸಂಪಾದಿಸಿ',
+    'common.view': 'ವೀಕ್ಷಿಸಿ',
     'common.download': 'ಡೌನ್‌ಲೋಡ್',
     'common.upload': 'ಅಪ್‌ಲೋಡ್',
-    
+
     // Footer
     'footer.about': 'HerbTrace ಬಗ್ಗೆ',
-    'footer.privacy': 'ಗೌಪ್ಯತಾ ನೀತಿ',
-    'footer.terms': 'ಸೇವಾ ಷರತ್ತುಗಳು',
+    'footer.privacy': 'ಗೌಪ್ಯತೆ ನೀತಿ',
+    'footer.terms': 'ಸೇವಾ ನಿಯಮಗಳು',
     'footer.contact': 'ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ',
     'footer.copyright': '© 2025 HerbTrace. ಆಯುರ್ವೇದ ಪಾರದರ್ಶಕತೆಗಾಗಿ ನಿರ್ಮಿಸಲಾಗಿದೆ.',
-  },
+  }
 };
-
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState(() => {

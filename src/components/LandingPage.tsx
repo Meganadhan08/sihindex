@@ -58,12 +58,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       title: t('role.processor'),
       description: t('role.processor.desc'),
       color: 'from-purple-500 to-purple-600'
-    },
-    {
-      icon: <Shield className="w-12 h-12 text-orange-600" />,
-      title: t('role.admin'),
-      description: t('role.admin.desc'),
-      color: 'from-orange-500 to-orange-600'
     }
   ];
 
@@ -131,7 +125,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             {t('hero.title')}
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto">
@@ -209,7 +203,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               Join our ecosystem as a stakeholder in the Ayurvedic supply chain
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {roles.map((role, index) => (
               <div key={index} className="group cursor-pointer" onClick={() => onNavigate('signup')}>
                 <div className={`bg-gradient-to-br ${role.color} p-8 rounded-xl text-white hover:scale-105 transition-transform`}>

@@ -13,22 +13,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Check for stored user session
     const storedUser = localStorage.getItem('herbTrace_user');
-    const storedUsers = localStorage.getItem('herbTrace_users');
-    
-    // Initialize with empty users array if not exists
-    if (!storedUsers) {
-      localStorage.setItem('herbTrace_users', JSON.stringify([]));
-    }
     
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-    setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -37,13 +30,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Get users from localStorage
-    const storedUsers = JSON.parse(localStorage.getItem('herbTrace_users') || '[]');
-    const foundUser = storedUsers.find((u: User) => u.email === email);
+    // Check for admin login
+    if (email === 'admin@herbtrace.com' && password === 'admin123') {
+      const adminUser: User = {
+        id: 'admin-001',
+        email: 'admin@herbtrace.com',
+        role: 'farmer', // We'll handle admin separately
+        name: 'System Administrator',
+        location: 'System',
+        contact_number: '+91 9999999999',
+        createdAt: new Date().toISOString()
+      };
+      
+      setUser(adminUser);
+      localStorage.setItem('herbTrace_user', JSON.stringify(adminUser));
+      setIsLoading(false);
+      return true;
+    }
     
-    if (foundUser && foundUser.password === password) {
-      setUser(foundUser);
-      localStorage.setItem('herbTrace_user', JSON.stringify(foundUser));
+    // Get users from localStorage (in real app, this would be API call)
+    const storedUsers = JSON.parse(localStorage.getItem('herbTrace_users') || '[]');
+    const foundUser = storedUsers.find((u: any) => u.email === email && u.password === password);
+    
+    if (foundUser) {
+      const { password: _, ...userWithoutPassword } = foundUser;
+      setUser(userWithoutPassword);
+      localStorage.setItem('herbTrace_user', JSON.stringify(userWithoutPassword));
       setIsLoading(false);
       return true;
     }
@@ -63,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const storedUsers = JSON.parse(localStorage.getItem('herbTrace_users') || '[]');
       
       // Check if user already exists
-      if (storedUsers.find((u: User) => u.email === data.email)) {
+      if (storedUsers.find((u: any) => u.email === data.email)) {
         setIsLoading(false);
         return false;
       }
@@ -72,22 +84,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const newUser: User = {
         id: Date.now().toString(),
         email: data.email,
-        password: data.password,
         role: data.role,
-        name: data.fullName,
+        name: data.name,
+        location: data.location,
+        contact_number: data.contact_number,
         organization: data.organization,
-        phone: data.phone,
         licenseNumber: `${data.role.toUpperCase()}-${Date.now()}`,
-        location: '',
         createdAt: new Date().toISOString()
       };
       
-      // Save to localStorage
-      storedUsers.push(newUser);
+      // Save user with password for login (in real app, password would be hashed)
+      const userWithPassword = { ...newUser, password: data.password };
+      storedUsers.push(userWithPassword);
       localStorage.setItem('herbTrace_users', JSON.stringify(storedUsers));
+      
+      // Set current user (without password)
+      setUser(newUser);
       localStorage.setItem('herbTrace_user', JSON.stringify(newUser));
       
-      setUser(newUser);
       setIsLoading(false);
       return true;
     } catch (error) {

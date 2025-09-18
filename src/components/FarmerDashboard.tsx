@@ -1,435 +1,363 @@
 import React, { useState } from 'react';
-import { Plus, MapPin, Calendar, Package, TrendingUp, Award, Camera, Upload, Save } from 'lucide-react';
+import { Plus, MapPin, Calendar, Package, TrendingUp, Award, Camera, Upload, Save, ArrowLeft } from 'lucide-react';
 
-const FarmerDashboard: React.FC = () => {
+interface FarmerDashboardProps {
+  onBack?: () => void;
+}
+
+const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
+  const [activeTab, setActiveTab] = useState('overview');
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
-    herbName: '',
-    scientificName: '',
-    collectionDate: '',
-    collectionTime: '',
-    latitude: '',
-    longitude: '',
-    village: '',
-    district: '',
-    state: '',
-    soilType: '',
-    temperature: '',
-    humidity: '',
-    rainfall: '',
-    harvestingMethod: '',
+    species: '',
     quantity: '',
-    unit: 'kg',
-    plantAge: '',
-    plantPart: '',
-    organicCertification: false
+    date: '',
+    gps_lat: '',
+    gps_lng: '',
+    quality_check: '',
+    remarks: ''
   });
 
   const collections = [
     {
-      id: 'COL001',
-      herbName: 'Ashwagandha',
-      scientificName: 'Withania somnifera',
-      location: 'Mysore, Karnataka',
-      date: '2024-01-15',
+      id: 'BATCH001',
+      species: 'Ashwagandha',
       quantity: '50 kg',
-      status: 'Verified',
-      coordinates: '12.9716° N, 77.5946° E',
-      blockchainHash: '0x1a2b3c4d...',
-      qrCode: 'QR-ASH-001'
+      date: '2024-01-15',
+      status: 'Collected',
+      gps: { lat: 12.9716, lng: 77.5946 },
+      quality_check: 'Grade A',
+      remarks: 'Fresh collection from organic farm'
     },
     {
-      id: 'COL002',
-      herbName: 'Turmeric',
-      scientificName: 'Curcuma longa',
-      location: 'Erode, Tamil Nadu',
-      date: '2024-01-14',
+      id: 'BATCH002',
+      species: 'Turmeric',
       quantity: '75 kg',
-      status: 'Pending',
-      coordinates: '11.1271° N, 78.6569° E',
-      blockchainHash: '0x2b3c4d5e...',
-      qrCode: 'QR-TUR-002'
+      date: '2024-01-14',
+      status: 'In Transit',
+      gps: { lat: 11.1271, lng: 78.6569 },
+      quality_check: 'Grade A+',
+      remarks: 'High curcumin content'
     }
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
-    }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Collection data:', formData);
+    console.log('New collection:', formData);
     setShowAddForm(false);
-    // Reset form
     setFormData({
-      herbName: '',
-      scientificName: '',
-      collectionDate: '',
-      collectionTime: '',
-      latitude: '',
-      longitude: '',
-      village: '',
-      district: '',
-      state: '',
-      soilType: '',
-      temperature: '',
-      humidity: '',
-      rainfall: '',
-      harvestingMethod: '',
+      species: '',
       quantity: '',
-      unit: 'kg',
-      plantAge: '',
-      plantPart: '',
-      organicCertification: false
+      date: '',
+      gps_lat: '',
+      gps_lng: '',
+      quality_check: '',
+      remarks: ''
     });
   };
 
   return (
-    <div className="space-y-8">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Farmer Dashboard</h1>
-          <p className="text-gray-600">Record and track your herb collections</p>
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-4">
+              {onBack && (
+                <button 
+                  onClick={onBack}
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+              )}
+              <h1 className="text-xl font-semibold text-gray-900">Farmer Dashboard</h1>
+            </div>
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+            >
+              <Plus className="w-4 h-4" />
+              <span>New Collection</span>
+            </button>
+          </div>
         </div>
-        <button
-          onClick={() => setShowAddForm(true)}
-          className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
-        >
-          <Plus className="w-5 h-5" />
-          <span>New Collection</span>
-        </button>
+      </header>
+
+      {/* Navigation Tabs */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-8">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'overview'
+                  ? 'border-green-500 text-green-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab('collections')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'collections'
+                  ? 'border-green-500 text-green-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Collections
+            </button>
+            <button
+              onClick={() => setActiveTab('agent')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'agent'
+                  ? 'border-green-500 text-green-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Agent Portal
+            </button>
+          </nav>
+        </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center">
-            <Package className="w-8 h-8 text-green-600" />
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Collections</p>
-              <p className="text-2xl font-semibold text-gray-900">24</p>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'overview' && (
+          <div className="space-y-8">
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="flex items-center">
+                  <Package className="w-8 h-8 text-green-600" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Total Collections</p>
+                    <p className="text-2xl font-semibold text-gray-900">24</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="flex items-center">
+                  <TrendingUp className="w-8 h-8 text-blue-600" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">This Month</p>
+                    <p className="text-2xl font-semibold text-gray-900">8</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="flex items-center">
+                  <Award className="w-8 h-8 text-yellow-600" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Quality Score</p>
+                    <p className="text-2xl font-semibold text-gray-900">94%</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div className="flex items-center">
+                  <MapPin className="w-8 h-8 text-purple-600" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Locations</p>
+                    <p className="text-2xl font-semibold text-gray-900">12</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center">
-            <TrendingUp className="w-8 h-8 text-blue-600" />
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">This Month</p>
-              <p className="text-2xl font-semibold text-gray-900">8</p>
+        )}
+
+        {activeTab === 'collections' && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">Recent Collections</h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batch ID</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Species</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">GPS Location</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quality</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {collections.map((collection) => (
+                    <tr key={collection.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {collection.id}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {collection.species}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {collection.quantity}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {collection.date}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {collection.gps.lat.toFixed(4)}, {collection.gps.lng.toFixed(4)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {collection.quality_check}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          collection.status === 'Collected' 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {collection.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center">
-            <Award className="w-8 h-8 text-yellow-600" />
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Quality Score</p>
-              <p className="text-2xl font-semibold text-gray-900">94%</p>
+        )}
+
+        {activeTab === 'agent' && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Agent Portal</h2>
+            <p className="text-gray-600 mb-6">
+              Connect with certified agents who can help you with collection, quality assessment, and market access.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="border border-gray-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Find Local Agents</h3>
+                <p className="text-gray-600 mb-4">Connect with verified agents in your area</p>
+                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                  Browse Agents
+                </button>
+              </div>
+              <div className="border border-gray-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Request Assistance</h3>
+                <p className="text-gray-600 mb-4">Get help with collection and quality assessment</p>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  Request Help
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-          <div className="flex items-center">
-            <MapPin className="w-8 h-8 text-purple-600" />
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Locations</p>
-              <p className="text-2xl font-semibold text-gray-900">12</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        )}
+      </main>
 
       {/* Add Collection Form Modal */}
       {showAddForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">Record New Collection</h2>
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              {/* Basic Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Herb Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Species *</label>
                   <input
                     type="text"
-                    name="herbName"
-                    value={formData.herbName}
+                    name="species"
+                    value={formData.species}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    placeholder="e.g., Ashwagandha"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Scientific Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Quantity *</label>
                   <input
-                    type="text"
-                    name="scientificName"
-                    value={formData.scientificName}
+                    type="number"
+                    name="quantity"
+                    value={formData.quantity}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    placeholder="Enter quantity in kg"
                     required
                   />
                 </div>
               </div>
 
-              {/* Collection Details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Collection Date</label>
-                  <input
-                    type="date"
-                    name="collectionDate"
-                    value={formData.collectionDate}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Collection Time</label>
-                  <input
-                    type="time"
-                    name="collectionTime"
-                    value={formData.collectionTime}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  />
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Collection Date *</label>
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  required
+                />
               </div>
 
-              {/* GPS Coordinates */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">GPS Latitude</label>
                   <input
                     type="number"
                     step="any"
-                    name="latitude"
-                    value={formData.latitude}
+                    name="gps_lat"
+                    value={formData.gps_lat}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="12.9716"
-                    required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">GPS Longitude</label>
                   <input
                     type="number"
                     step="any"
-                    name="longitude"
-                    value={formData.longitude}
+                    name="gps_lng"
+                    value={formData.gps_lng}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="77.5946"
-                    required
                   />
                 </div>
               </div>
 
-              {/* Location Details */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Village</label>
-                  <input
-                    type="text"
-                    name="village"
-                    value={formData.village}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">District</label>
-                  <input
-                    type="text"
-                    name="district"
-                    value={formData.district}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
-                  <input
-                    type="text"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Environmental Conditions */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Soil Type</label>
-                  <select
-                    name="soilType"
-                    value={formData.soilType}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  >
-                    <option value="">Select Soil Type</option>
-                    <option value="red-laterite">Red Laterite</option>
-                    <option value="black-cotton">Black Cotton</option>
-                    <option value="alluvial">Alluvial</option>
-                    <option value="sandy">Sandy</option>
-                    <option value="clay">Clay</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Temperature (°C)</label>
-                  <input
-                    type="number"
-                    name="temperature"
-                    value={formData.temperature}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Humidity (%)</label>
-                  <input
-                    type="number"
-                    name="humidity"
-                    value={formData.humidity}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Rainfall</label>
-                  <select
-                    name="rainfall"
-                    value={formData.rainfall}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  >
-                    <option value="">Select</option>
-                    <option value="none">None</option>
-                    <option value="light">Light</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="heavy">Heavy</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Harvesting Details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Harvesting Method</label>
-                  <select
-                    name="harvestingMethod"
-                    value={formData.harvestingMethod}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  >
-                    <option value="">Select Method</option>
-                    <option value="hand-picked">Hand Picked</option>
-                    <option value="machine-harvested">Machine Harvested</option>
-                    <option value="selective-picking">Selective Picking</option>
-                  </select>
-                </div>
-                <div className="flex space-x-3">
-                  <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      name="quantity"
-                      value={formData.quantity}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Unit</label>
-                    <select
-                      name="unit"
-                      value={formData.unit}
-                      onChange={handleInputChange}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    >
-                      <option value="kg">kg</option>
-                      <option value="grams">grams</option>
-                      <option value="tons">tons</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Plant Details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Plant Age</label>
-                  <input
-                    type="text"
-                    name="plantAge"
-                    value={formData.plantAge}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="e.g., 2 years"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Plant Part</label>
-                  <select
-                    name="plantPart"
-                    value={formData.plantPart}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    required
-                  >
-                    <option value="">Select Part</option>
-                    <option value="root">Root</option>
-                    <option value="stem">Stem</option>
-                    <option value="leaves">Leaves</option>
-                    <option value="flowers">Flowers</option>
-                    <option value="fruits">Fruits</option>
-                    <option value="seeds">Seeds</option>
-                    <option value="whole-plant">Whole Plant</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Certification */}
-              <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  id="organicCertification"
-                  name="organicCertification"
-                  checked={formData.organicCertification}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Quality Check</label>
+                <select
+                  name="quality_check"
+                  value={formData.quality_check}
                   onChange={handleInputChange}
-                  className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-                />
-                <label htmlFor="organicCertification" className="text-sm font-medium text-gray-700">
-                  Organic Certification Available
-                </label>
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Select Quality Grade</option>
+                  <option value="Grade A+">Grade A+</option>
+                  <option value="Grade A">Grade A</option>
+                  <option value="Grade B">Grade B</option>
+                  <option value="Grade C">Grade C</option>
+                </select>
               </div>
 
-              {/* Photo Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Remarks</label>
+                <textarea
+                  name="remarks"
+                  value={formData.remarks}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  placeholder="Additional notes about the collection..."
+                ></textarea>
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Photos</label>
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
@@ -445,7 +373,6 @@ const FarmerDashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Form Actions */}
               <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                 <button
                   type="button"
@@ -466,69 +393,6 @@ const FarmerDashboard: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Recent Collections */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Recent Collections</h2>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Collection ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Herb</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">QR Code</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {collections.map((collection) => (
-                <tr key={collection.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {collection.id}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">{collection.herbName}</div>
-                      <div className="text-sm text-gray-500">{collection.scientificName}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <div className="flex items-center">
-                      <MapPin className="w-4 h-4 text-gray-400 mr-1" />
-                      {collection.location}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {collection.date}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {collection.quantity}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      collection.status === 'Verified' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {collection.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <button className="text-green-600 hover:text-green-800 font-medium">
-                      {collection.qrCode}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   );
 };
