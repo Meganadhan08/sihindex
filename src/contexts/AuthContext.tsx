@@ -51,9 +51,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // For demo purposes, we'll just check if user exists in localStorage
     // In real app, this would be API call to backend
     const demoUsers = [
-      { email: 'farmer@example.com', password: 'password123', role: 'farmer', name: 'John Farmer' },
-      { email: 'lab@example.com', password: 'password123', role: 'lab', name: 'Lab Technician' },
-      { email: 'processor@example.com', password: 'password123', role: 'processor', name: 'Processor Manager' }
+      { email: 'farmer@example.com', password: 'password123', role: 'farmer', name: 'John Farmer', farmLocation: 'Karnataka, India' },
+      { email: 'agent@example.com', password: 'password123', role: 'agent', name: 'Agency Manager', location: 'Bangalore, India' },
+      { email: 'manufacturer@example.com', password: 'password123', role: 'manufacturer', name: 'Manufacturing Head', location: 'Chennai, India' }
     ];
     
     const foundUser = demoUsers.find(u => u.email === email && u.password === password);
@@ -62,9 +62,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const user: User = {
         id: Date.now().toString(),
         email: foundUser.email,
-        role: foundUser.role as 'farmer' | 'lab' | 'processor',
+        role: foundUser.role as 'farmer' | 'agent' | 'manufacturer',
         name: foundUser.name,
-        location: 'Demo Location',
+        location: foundUser.location,
+        farmLocation: foundUser.farmLocation,
         contact_number: '+91 9876543210',
         createdAt: new Date().toISOString()
       };
@@ -93,6 +94,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         role: data.role,
         name: data.name,
         location: data.location,
+        farmLocation: data.farmLocation,
+        crops: data.crops,
         contact_number: data.contact_number,
         organization: data.organization,
         licenseNumber: `${data.role.toUpperCase()}-${Date.now()}`,

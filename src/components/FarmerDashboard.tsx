@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, MapPin, Calendar, Package, TrendingUp, Award, Camera, Upload, Save, ArrowLeft } from 'lucide-react';
+import { Plus, MapPin, Calendar, Package, TrendingUp, Award, Camera, Upload, Save, ArrowLeft, LogOut, Eye } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 
 interface FarmerDashboardProps {
   onBack?: () => void;
@@ -8,16 +9,17 @@ interface FarmerDashboardProps {
 
 const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
   const { t } = useLanguage();
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
   const [showAddForm, setShowAddForm] = useState(false);
+  const [selectedBatch, setSelectedBatch] = useState<any>(null);
   const [formData, setFormData] = useState({
     species: '',
     quantity: '',
     date: '',
     gps_lat: '',
     gps_lng: '',
-    quality_check: '',
-    remarks: ''
+    photo: null as File | null
   });
 
   const collections = [
@@ -26,28 +28,60 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
       species: 'Ashwagandha',
       quantity: 50,
       date: '2024-01-15',
-      status: 'Collected',
+      status: 'pending_collection',
       gps: { lat: 12.9716, lng: 77.5946 },
-      quality_check: 'Grade A',
-      remarks: 'Fresh collection from organic farm'
+      photo: '/api/placeholder/300/200'
     },
     {
       id: 'BATCH002',
-      species: 'Turmeric',
-      quantity: 75,
+      species: 'Ashwagandha',
+      quantity: 30,
       date: '2024-01-14',
-      status: 'In Transit',
-      gps: { lat: 11.1271, lng: 78.6569 },
-      quality_check: 'Grade A+',
-      remarks: 'High curcumin content'
+      status: 'assigned_to_agency',
+      gps: { lat: 12.9716, lng: 77.5946 },
+      assigned_agency: 'Green Harvest Agency',
+      photo: '/api/placeholder/300/200'
+    },
+    {
+      id: 'BATCH003',
+      species: 'Ashwagandha',
+      quantity: 25,
+      date: '2024-01-13',
+      status: 'collected',
+      gps: { lat: 12.9716, lng: 77.5946 },
+      assigned_agency: 'Green Harvest Agency',
+      photo: '/api/placeholder/300/200'
     }
   ];
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending_collection': return 'bg-yellow-100 text-yellow-800';
+      case 'assigned_to_agency': return 'bg-blue-100 text-blue-800';
+      case 'collected': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'pending_collection': return 'Pending Collection';
+      case 'assigned_to_agency': return 'Assigned to Agency';
+      case 'collected': return 'Collected';
+      default: return status;
+    }
+  };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData(prev => ({ ...prev, photo: file }));
+    }
+  };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('New collection:', formData);
@@ -58,8 +92,7 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
       date: '',
       gps_lat: '',
       gps_lng: '',
-      quality_check: '',
-      remarks: ''
+      photo: null
     });
   };
 
@@ -70,23 +103,25 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              {onBack && (
-                <button 
-                  onClick={onBack}
-                  className="text-gray-500 hover:text-gray-700 transition-colors"
-                >
-                  <ArrowLeft className="w-5 h-5" />
-                </button>
-              )}
-              <h1 className="text-xl font-semibold text-gray-900">{t('role.farmer')} {t('nav.dashboard')}</h1>
+              <h1 className="text-xl font-semibold text-gray-900">Farmer Dashboard</h1>
+              <span className="text-sm text-gray-500">Welcome, {user?.name}</span>
             </div>
-            <button
-              onClick={() => setShowAddForm(true)}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>{t('dashboard.newRecord')}</span>
-            </button>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Batch</span>
+              </button>
+              <button
+                onClick={logout}
+                className="text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-1"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -106,24 +141,14 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
               {t('dashboard.overview')}
             </button>
             <button
-              onClick={() => setActiveTab('collections')}
+              onClick={() => setActiveTab('batches')}
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'collections'
+                activeTab === 'batches'
                   ? 'border-green-500 text-green-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Collections
-            </button>
-            <button
-              onClick={() => setActiveTab('agent')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'agent'
-                  ? 'border-green-500 text-green-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              {t('dashboard.agent')}
+              My Batches
             </button>
           </nav>
         </div>
@@ -139,35 +164,41 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
                 <div className="flex items-center">
                   <Package className="w-8 h-8 text-green-600" />
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Total Collections</p>
-                    <p className="text-2xl font-semibold text-gray-900">24</p>
+                    <p className="text-sm font-medium text-gray-600">Total Batches</p>
+                    <p className="text-2xl font-semibold text-gray-900">{collections.length}</p>
                   </div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex items-center">
-                  <TrendingUp className="w-8 h-8 text-blue-600" />
+                  <Calendar className="w-8 h-8 text-blue-600" />
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">This Month</p>
-                    <p className="text-2xl font-semibold text-gray-900">8</p>
+                    <p className="text-sm font-medium text-gray-600">Pending Collection</p>
+                    <p className="text-2xl font-semibold text-gray-900">
+                      {collections.filter(b => b.status === 'pending_collection').length}
+                    </p>
                   </div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex items-center">
-                  <Award className="w-8 h-8 text-yellow-600" />
+                  <TrendingUp className="w-8 h-8 text-yellow-600" />
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Quality Score</p>
-                    <p className="text-2xl font-semibold text-gray-900">94%</p>
+                    <p className="text-sm font-medium text-gray-600">Assigned to Agency</p>
+                    <p className="text-2xl font-semibold text-gray-900">
+                      {collections.filter(b => b.status === 'assigned_to_agency').length}
+                    </p>
                   </div>
                 </div>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex items-center">
-                  <MapPin className="w-8 h-8 text-purple-600" />
+                  <Award className="w-8 h-8 text-purple-600" />
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Locations</p>
-                    <p className="text-2xl font-semibold text-gray-900">12</p>
+                    <p className="text-sm font-medium text-gray-600">Collected</p>
+                    <p className="text-2xl font-semibold text-gray-900">
+                      {collections.filter(b => b.status === 'collected').length}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -175,85 +206,44 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
           </div>
         )}
 
-        {activeTab === 'collections' && (
+        {activeTab === 'batches' && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Collections</h2>
+              <h2 className="text-lg font-semibold text-gray-900">My Batches</h2>
             </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batch ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Species</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity (kg)</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">GPS Location</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quality</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {collections.map((collection) => (
-                    <tr key={collection.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {collection.id}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {collection.species}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {collection.quantity}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {collection.date}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        <div className="flex items-center">
-                          <MapPin className="w-4 h-4 text-gray-400 mr-1" />
-                          {collection.gps.lat.toFixed(4)}, {collection.gps.lng.toFixed(4)}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {collection.quality_check}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          collection.status === 'Collected' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
-                          {collection.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'agent' && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('dashboard.agent')}</h2>
-            <p className="text-gray-600 mb-6">
-              Connect with certified agents who can help you with collection, quality assessment, and market access.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Find Local Agents</h3>
-                <p className="text-gray-600 mb-4">Connect with verified agents in your area</p>
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                  Browse Agents
-                </button>
-              </div>
-              <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Request Assistance</h3>
-                <p className="text-gray-600 mb-4">Get help with collection and quality assessment</p>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                  Request Help
-                </button>
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {collections.map((batch) => (
+                  <div key={batch.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="font-semibold text-gray-900">{batch.species}</h3>
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(batch.status)}`}>
+                        {getStatusText(batch.status)}
+                      </span>
+                    </div>
+                    
+                    <div className="space-y-2 text-sm text-gray-600 mb-4">
+                      <p><strong>Batch ID:</strong> {batch.id}</p>
+                      <p><strong>Quantity:</strong> {batch.quantity} kg</p>
+                      <p><strong>Date:</strong> {batch.date}</p>
+                      <div className="flex items-center">
+                        <MapPin className="w-4 h-4 mr-1" />
+                        <span>{batch.gps.lat.toFixed(4)}, {batch.gps.lng.toFixed(4)}</span>
+                      </div>
+                      {batch.assigned_agency && (
+                        <p><strong>Agency:</strong> {batch.assigned_agency}</p>
+                      )}
+                    </div>
+                    
+                    <button
+                      onClick={() => setSelectedBatch(batch)}
+                      className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span>View Details</span>
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -265,22 +255,23 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-900">Record New Collection</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Add New Batch</h2>
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Species *</label>
-                  <input
-                    type="text"
+                  <select
                     name="species"
                     value={formData.species}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                    placeholder="e.g., Ashwagandha"
                     required
-                  />
+                  >
+                    <option value="">Select Species</option>
+                    <option value="Ashwagandha">Ashwagandha</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Quantity (kg) *</label>
@@ -297,7 +288,7 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Collection Date *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Date *</label>
                 <input
                   type="date"
                   name="date"
@@ -310,7 +301,7 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">GPS Latitude (Optional)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">GPS Latitude *</label>
                   <input
                     type="number"
                     step="any"
@@ -319,10 +310,11 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="12.9716"
+                    required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">GPS Longitude (Optional)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">GPS Longitude *</label>
                   <input
                     type="number"
                     step="any"
@@ -331,50 +323,26 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="77.5946"
+                    required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Quality Check (Optional)</label>
-                <select
-                  name="quality_check"
-                  value={formData.quality_check}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                >
-                  <option value="">Select Quality Grade</option>
-                  <option value="Grade A+">Grade A+</option>
-                  <option value="Grade A">Grade A</option>
-                  <option value="Grade B">Grade B</option>
-                  <option value="Grade C">Grade C</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Remarks (Optional)</label>
-                <textarea
-                  name="remarks"
-                  value={formData.remarks}
-                  onChange={handleInputChange}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  placeholder="Additional notes about the collection..."
-                ></textarea>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Photos (Optional)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Photo Upload *</label>
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                   <Camera className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600 mb-2">Upload photos of the collection</p>
-                  <button
-                    type="button"
+                  <p className="text-sm text-gray-600 mb-2">Upload photo of the batch</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
                     className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-2 mx-auto"
-                  >
-                    <Upload className="w-4 h-4" />
-                    <span>Choose Files</span>
-                  </button>
+                    required
+                  />
+                  {formData.photo && (
+                    <p className="text-sm text-green-600 mt-2">File selected: {formData.photo.name}</p>
+                  )}
                 </div>
               </div>
 
@@ -391,10 +359,70 @@ const FarmerDashboard: React.FC<FarmerDashboardProps> = ({ onBack }) => {
                   className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
                 >
                   <Save className="w-4 h-4" />
-                  <span>{t('common.save')} Collection</span>
+                  <span>Save Batch</span>
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Batch Details Modal */}
+      {selectedBatch && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900">Batch Details</h2>
+            </div>
+            
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-500">Batch ID</label>
+                  <p className="text-lg font-semibold text-gray-900">{selectedBatch.id}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-500">Species</label>
+                  <p className="text-lg font-semibold text-gray-900">{selectedBatch.species}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-500">Quantity</label>
+                  <p className="text-lg font-semibold text-gray-900">{selectedBatch.quantity} kg</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-500">Date</label>
+                  <p className="text-lg font-semibold text-gray-900">{selectedBatch.date}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-500">GPS Location</label>
+                  <p className="text-lg font-semibold text-gray-900">
+                    {selectedBatch.gps.lat.toFixed(4)}, {selectedBatch.gps.lng.toFixed(4)}
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-500">Status</label>
+                  <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(selectedBatch.status)}`}>
+                    {getStatusText(selectedBatch.status)}
+                  </span>
+                </div>
+              </div>
+
+              {selectedBatch.assigned_agency && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-500">Assigned Agency</label>
+                  <p className="text-lg font-semibold text-gray-900">{selectedBatch.assigned_agency}</p>
+                </div>
+              )}
+
+              <div className="flex justify-end pt-6 border-t border-gray-200">
+                <button
+                  onClick={() => setSelectedBatch(null)}
+                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

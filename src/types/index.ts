@@ -1,9 +1,11 @@
 export interface User {
   id: string;
   email: string;
-  role: 'farmer' | 'lab' | 'processor';
+  role: 'farmer' | 'agent' | 'manufacturer';
   name: string;
-  location: string;
+  location?: string;
+  farmLocation?: string;
+  crops?: string;
   contact_number: string;
   organization?: string;
   licenseNumber?: string;
@@ -14,10 +16,12 @@ export interface SignupData {
   email: string;
   password: string;
   name: string;
-  location: string;
+  location?: string;
+  farmLocation?: string;
+  crops?: string;
   contact_number: string;
   organization?: string;
-  role: 'farmer' | 'lab' | 'processor';
+  role: 'farmer' | 'agent' | 'manufacturer';
 }
 
 export interface BatchCollection {
@@ -35,7 +39,9 @@ export interface BatchCollection {
   remarks?: string;
   temperature?: number;
   humidity?: number;
-  status: 'collected' | 'in_transit' | 'received' | 'processed';
+  status: 'pending_collection' | 'assigned_to_agency' | 'collected' | 'in_transit' | 'received' | 'processed';
+  assigned_agency?: string;
+  agency_id?: string;
 }
 
 export interface HandoffEvent {

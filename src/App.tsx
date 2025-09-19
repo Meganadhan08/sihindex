@@ -4,8 +4,8 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import LandingPage from './components/LandingPage';
 import AuthPages from './components/AuthPages';
 import FarmerDashboard from './components/FarmerDashboard';
-import LabDashboard from './components/LabDashboard';
-import ProcessorDashboard from './components/ProcessorDashboard';
+import AgentDashboard from './components/AgentDashboard';
+import ManufacturerDashboard from './components/ManufacturerDashboard';
 import AdminDashboard from './components/AdminDashboard';
 
 const AppContent: React.FC = () => {
@@ -32,10 +32,10 @@ const AppContent: React.FC = () => {
     switch (user.role) {
       case 'farmer':
         return <FarmerDashboard />;
-      case 'lab':
-        return <LabDashboard />;
-      case 'processor':
-        return <ProcessorDashboard />;
+      case 'agent':
+        return <AgentDashboard />;
+      case 'manufacturer':
+        return <ManufacturerDashboard />;
       default:
         return <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">

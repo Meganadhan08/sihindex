@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Leaf, Eye, EyeOff, AlertCircle, Loader, Users, FlaskConical, Factory, ArrowLeft, MapPin, Phone, Mail, User, Building } from 'lucide-react';
+import { Leaf, Eye, EyeOff, AlertCircle, Loader, ArrowLeft, MapPin, Phone, Mail, User, Building, Sprout } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import LanguageSelector from './LanguageSelector';
@@ -18,44 +18,16 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
     password: '',
     confirmPassword: '',
     name: '',
-    location: '',
+    farmLocation: '',
+    crops: '',
     contact_number: '',
     organization: '',
-    role: ''
+    role: 'farmer' // Default to farmer
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
 
-  const roles = [
-    {
-      id: 'farmer',
-      title: t('role.farmer'),
-      description: t('role.farmer.desc'),
-      icon: <Users className="w-8 h-8" />,
-      color: 'border-green-200 hover:border-green-400 hover:bg-green-50',
-      bgColor: 'bg-green-50',
-      textColor: 'text-green-700'
-    },
-    {
-      id: 'lab',
-      title: t('role.lab'),
-      description: t('role.lab.desc'),
-      icon: <FlaskConical className="w-8 h-8" />,
-      color: 'border-blue-200 hover:border-blue-400 hover:bg-blue-50',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-700'
-    },
-    {
-      id: 'processor',
-      title: t('role.processor'),
-      description: t('role.processor.desc'),
-      icon: <Factory className="w-8 h-8" />,
-      color: 'border-purple-200 hover:border-purple-400 hover:bg-purple-50',
-      bgColor: 'bg-purple-50',
-      textColor: 'text-purple-700'
-    }
-  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,10 +35,6 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
     setError('');
   };
 
-  const handleRoleSelect = (roleId: string) => {
-    setFormData(prev => ({ ...prev, role: roleId }));
-    setError('');
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,7 +62,7 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
     } else {
       // Signup validation
       if (!formData.email || !formData.password || !formData.confirmPassword || 
-          !formData.name || !formData.location || !formData.contact_number || !formData.role) {
+          !formData.name || !formData.farmLocation || !formData.contact_number || !formData.crops) {
         setError('Please fill in all required fields');
         return;
       }
@@ -113,10 +81,11 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
         email: formData.email,
         password: formData.password,
         name: formData.name,
-        location: formData.location,
+        farmLocation: formData.farmLocation,
+        crops: formData.crops,
         contact_number: formData.contact_number,
         organization: formData.organization,
-        role: formData.role as 'farmer' | 'lab' | 'processor'
+        role: formData.role as 'farmer' | 'agent' | 'manufacturer'
       });
 
       if (!success) {
@@ -144,7 +113,7 @@ const AuthPages: React.FC<AuthPagesProps> = ({ mode, onNavigate }) => {
             <LanguageSelector />
           </div>
           <p className="text-gray-600 text-lg">
-            {mode === 'login' ? 'Welcome back to the future of herb traceability!' : 'Join the revolution in Ayurvedic transparency'}
+            {mode === 'login' ? 'Welcome back to the future of herb traceability!' : 'Join as a Farmer - Register to start tracking your herbs'}
           </p>
         </div>
 
