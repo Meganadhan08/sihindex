@@ -57,7 +57,7 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto flex justify-between items-center p-4 md:p-6">
           <div className="flex items-center space-x-2">
             <Leaf className="w-8 h-8 text-green-600" />
-            <span className="font-bold text-2xl md:text-3xl">HerbTrace</span>
+            <span className="font-bold text-2xl md:text-3xl">AyurTrace</span>
           </div>
           <div className="flex space-x-4 items-center">
             <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="text-green-600 font-medium hover:text-green-700 transition">
