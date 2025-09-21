@@ -1,150 +1,103 @@
-import React, { useState } from 'react';
-import { Leaf, Eye, EyeOff, AlertCircle, Loader } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Leaf } from "lucide-react";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const { login, isLoading } = useAuth();
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    const success = login(email, password);
 
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      return;
-    }
-
-    const success = await login(email, password);
     if (!success) {
-      setError('Invalid email or password');
+      setError("Invalid email or password");
+    } else {
+      // redirect based on role
+      switch (true) {
+        case email.includes("farmer"):
+          navigate("/farmer-dashboard");
+          break;
+        case email.includes("lab"):
+          navigate("/lab-dashboard");
+          break;
+        case email.includes("agent"):
+          navigate("/agent-dashboard");
+          break;
+        case email.includes("manufacturer"):
+          navigate("/manufacturer-dashboard");
+          break;
+        case email.includes("admin"):
+          navigate("/admin-dashboard");
+          break;
+        default:
+          navigate("/farmer-dashboard");
+      }
     }
   };
 
-  const demoAccounts = [
-    { role: 'Farmer/Collector', email: 'farmer@example.com', color: 'bg-green-500' },
-    { role: 'Laboratory', email: 'lab@example.com', color: 'bg-blue-500' },
-    { role: 'Processor/Manufacturer', email: 'processor@example.com', color: 'bg-purple-500' },
-    { role: 'Admin/Supervisor', email: 'admin@example.com', color: 'bg-orange-500' }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Leaf className="w-10 h-10 text-green-600" />
-            <h1 className="text-3xl font-bold text-gray-900">HerbTrace</h1>
-          </div>
-          <p className="text-gray-600">Blockchain-based Ayurvedic Herb Traceability</p>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 to-emerald-200">
+      
+      {/* Back / Navbar */}
+      <div className="w-full bg-white/90 backdrop-blur-md shadow-md p-4 flex items-center max-w-7xl mx-auto">
+        <button onClick={() => navigate(-1)} className="flex items-center text-green-600 font-medium hover:underline">
+          <ArrowLeft className="w-5 h-5 mr-2" /> Back
+        </button>
+        <div className="flex items-center ml-auto space-x-2">
+          <Leaf className="w-6 h-6 text-green-600" />
+          <span className="font-bold text-xl">HerbTrace</span>
         </div>
+      </div>
 
-        {/* Login Form */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Sign In</h2>
-          
+      {/* Login Form */}
+      <div className="flex flex-1 items-center justify-center px-4 py-12">
+        <div className="bg-white rounded-2xl shadow-xl p-12 w-full max-w-lg">
+          <h1 className="text-3xl font-bold mb-6 text-center text-gray-900">Login</h1>
+          {error && <p className="text-red-600 mb-4 text-center">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input
-                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                className="mt-1 w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 text-lg"
                 placeholder="Enter your email"
-                disabled={isLoading}
+                required
               />
             </div>
-
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors pr-12"
-                  placeholder="Enter your password"
-                  disabled={isLoading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                  disabled={isLoading}
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 text-lg"
+                placeholder="Enter your password"
+                required
+              />
             </div>
-
-            {error && (
-              <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-3 rounded-lg">
-                <AlertCircle className="w-5 h-5" />
-                <span className="text-sm">{error}</span>
-              </div>
-            )}
-
             <button
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-all text-lg font-semibold"
             >
-              {isLoading ? (
-                <>
-                  <Loader className="w-5 h-5 animate-spin" />
-                  <span>Signing In...</span>
-                </>
-              ) : (
-                <span>Sign In</span>
-              )}
+              Login
             </button>
           </form>
-        </div>
 
-        {/* Demo Accounts */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Demo Accounts</h3>
-          <p className="text-sm text-gray-600 mb-4">Use these credentials to explore different roles:</p>
-          
-          <div className="space-y-3">
-            {demoAccounts.map((account, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className={`w-3 h-3 rounded-full ${account.color}`}></div>
-                  <div>
-                    <p className="font-medium text-gray-900">{account.role}</p>
-                    <p className="text-sm text-gray-600">{account.email}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    setEmail(account.email);
-                    setPassword('password123');
-                  }}
-                  className="text-green-600 hover:text-green-700 text-sm font-medium"
-                  disabled={isLoading}
-                >
-                  Use
-                </button>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-800">
-              <strong>Password for all accounts:</strong> password123
-            </p>
+          <div className="mt-6 text-center text-gray-600">
+            Don't have an account?{" "}
+            <span
+              onClick={() => navigate("/signup")}
+              className="text-green-600 font-medium cursor-pointer hover:underline"
+            >
+              Sign Up
+            </span>
           </div>
         </div>
       </div>

@@ -1,126 +1,69 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, SignupData } from '../types';
+// src/contexts/AuthContext.tsx
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
+
+interface User {
+  name: string;
+  email: string;
+  role: string;
+  contactNumber?: string;
+  farmLocation?: string;
+  crops?: string[];
+}
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => boolean;
+  signup: (data: Partial<User>) => boolean;
   logout: () => void;
-  isLoading: boolean;
-  signup: (data: SignupData) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check for stored user session
-    const storedUser = localStorage.getItem('herbTrace_user');
-    
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+  const login = (email: string, password: string) => {
+    let role = "farmer";
+    if (email.includes("lab")) role = "lab";
+    else if (email.includes("agent")) role = "agent";
+    else if (email.includes("manufacturer")) role = "manufacturer";
+    else if (email.includes("admin")) role = "admin";
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Check for admin login
-    if (email === 'admin@herbtrace.com' && password === 'admin123') {
-      const adminUser: User = {
-        id: 'admin-001',
-        email: 'admin@herbtrace.com',
-        role: 'farmer', // We'll handle admin separately
-        name: 'System Administrator',
-        location: 'System',
-        contact_number: '+91 9999999999',
-        createdAt: new Date().toISOString()
-      };
-      
-      setUser(adminUser);
-      localStorage.setItem('herbTrace_user', JSON.stringify(adminUser));
-      setIsLoading(false);
-      return true;
-    }
-    
-    // For demo purposes, we'll just check if user exists in localStorage
-    // In real app, this would be API call to backend
-    const demoUsers = [
-      { email: 'farmer@example.com', password: 'password123', role: 'farmer', name: 'John Farmer', farmLocation: 'Karnataka, India' },
-      { email: 'agent@example.com', password: 'password123', role: 'agent', name: 'Agency Manager', location: 'Bangalore, India' },
-      { email: 'manufacturer@example.com', password: 'password123', role: 'manufacturer', name: 'Manufacturing Head', location: 'Chennai, India' }
-    ];
-    
-    const foundUser = demoUsers.find(u => u.email === email && u.password === password);
-    
-    if (foundUser) {
-      const user: User = {
-        id: Date.now().toString(),
-        email: foundUser.email,
-        role: foundUser.role as 'farmer' | 'agent' | 'manufacturer',
-        name: foundUser.name,
-        location: foundUser.location,
-        farmLocation: foundUser.farmLocation,
-        contact_number: '+91 9876543210',
-        createdAt: new Date().toISOString()
-      };
-      
-      setUser(user);
-      localStorage.setItem('herbTrace_user', JSON.stringify(user));
-      setIsLoading(false);
-      return true;
-    }
-    
-    setIsLoading(false);
-    return false;
+    const demoUser: User = {
+      name: "Demo User",
+      email,
+      role,
+      contactNumber: "1234567890",
+      farmLocation: "Demo Farm",
+      crops: ["Ashwagandha", "Tulsi"]
+    };
+
+    setUser(demoUser);
+    return true;
   };
 
-  const signup = async (data: SignupData): Promise<boolean> => {
-    setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    try {
-      // Create new user
-      const newUser: User = {
-        id: Date.now().toString(),
-        email: data.email,
-        role: data.role,
-        name: data.name,
-        location: data.location,
-        farmLocation: data.farmLocation,
-        crops: data.crops,
-        contact_number: data.contact_number,
-        organization: data.organization,
-        licenseNumber: `${data.role.toUpperCase()}-${Date.now()}`,
-        createdAt: new Date().toISOString()
-      };
-      
-      // Set current user
-      setUser(newUser);
-      localStorage.setItem('herbTrace_user', JSON.stringify(newUser));
-      
-      setIsLoading(false);
-      return true;
-    } catch (error) {
-      setIsLoading(false);
-      return false;
-    }
+  const signup = (data: Partial<User>) => {
+    const newUser: User = {
+      name: data.name || "Demo User",
+      email: data.email || "demo@example.com",
+      role: "farmer",
+      contactNumber: data.contactNumber,
+      farmLocation: data.farmLocation,
+      crops: data.crops || []
+    };
+    setUser(newUser);
+    return true;
   };
 
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem('herbTrace_user');
+    setUser(null);             // Clear user state
+    navigate("/login");        // Redirect to login page
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading, signup }}>
+    <AuthContext.Provider value={{ user, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -128,8 +71,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };
